@@ -3,12 +3,11 @@ if memory
     legend #{title}
     fieldset
       .pure-control-group
-        label(for="description") Text
-        textarea(id="memory-text", type="text", name="text", placeholder="...", autofocus="autofocus")
+        textarea(id="memory-text", rows="5", type="text", name="text", placeholder="...", autofocus="autofocus")
           if memory.text
             | #{memory.text}
       .pure-control-group
-        label(for="link") Link
+        label(for="link").link-label Link
         input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
       input(id="memory-time", type ="hidden", name="time", value="#{new Date}")
       input(id="memory-searchable-url", type ="hidden", name="searchableUrl", value="#{memory.searchableUrl}")
@@ -19,10 +18,9 @@ if !memory
   #memory-form.pure-form.pure-form-aligned
     fieldset
       .pure-control-group
-        label(for="description") Text
-        textarea(id="memory-text", type="text", name="text", placeholder="...", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
+        textarea(id="memory-text", rows="5", type="text", name="text", placeholder="...", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
       .pure-control-group
-        label(for="link") Link
+        label(for="link").link-label Link
         input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
       
       .pure-controls

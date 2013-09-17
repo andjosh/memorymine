@@ -1,8 +1,13 @@
 @import url("./pure-min.css");
+@import url("http://fonts.googleapis.com/css?family=Muli:300|Telex");
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Telex", Helvetica, Arial, sans-serif;
   max-width: 1400px;
   margin: 0 auto;
+}
+h1, h2, h3, h4{
+  font-family: "Muli";
+  font-weight: 300;
 }
 .pure-g-r{
   margin: 0 5px;
@@ -42,19 +47,26 @@ input[type="button"]:hover, .btn:hover, button:hover{
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 /*Nav bar*/
 .pure-menu ul li a{
+  font-weight: 300;
+  font-family: "Muli";
   color: #222;
   border-bottom: 3px solid #fff;
+  padding-bottom: 3px;
 }
 .pure-menu ul li a:hover{
   border-bottom: 3px solid rgba(94,91,214,0.75) !important;
   background: none;
 }
 .brand-nav{
-  font-weight: 700;
+  padding-top: 0;
   color: rgba(94,91,214,1) !important;
   font-size: 1.5em;
   padding-bottom: 3px !important;
   line-height: 1em !important;
+}
+.memory{
+  font-family: "Telex";
+  font-weight: 400;
 }
 .nav-input {
   margin-top: 1.1em;
@@ -93,6 +105,9 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 .lead {
   font-size: 1.2em;
 }
+.muted{
+  opacity: 0.5;
+}
 #memory-list {
   list-style: none;
   padding: 0;
@@ -114,4 +129,22 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 #memory-list li small{
   opacity: 0.5;
   float: right;
+}
+legend{
+  font-family: "Muli";
+  font-weight: 300;
+}
+#memory-form #memory-text{
+  width: 100%;
+  margin-bottom: 15px;
+}
+#memory-form .link-label, .link-label{
+  width: auto;
+}
+#memory-form #send{
+  width: 100%;
+  padding: 0.5em;
+}
+#memory-form .pure-controls{
+  margin-left: 0;
 }

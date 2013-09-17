@@ -2,7 +2,8 @@ doctype 5
 html
   head
     title= title
-    <meta name="viewport" content="width=device-width" />
+    meta(name="viewport", content="width=device-width")
+    link(rel='icon', href="/images/favicon.png")
     link(rel='stylesheet', href='/stylesheets/style.css')
     if user
       meta(name="uid", content="#{user._id}")
@@ -16,7 +17,7 @@ html
         .pure-menu.pure-menu-open.pure-menu-horizontal
           ul.otherly
             li
-              a.brand-nav(href="/") MemoryMine
+              a.brand-nav(href="/") <span class="memory">Memory</span>Mine
             if user
               li
                 a(href="/account") Account
