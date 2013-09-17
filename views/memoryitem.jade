@@ -1,0 +1,13 @@
+if memory.link
+  li.truncate
+    a(href="#{memory.link}", target="_blank") #{memory.text}
+  ul
+    li
+      small
+        a(href="/memory/#{memory._id}") #{memory.modified}
+else
+  li.truncate #{memory.text} #{memory.created}
+  ul
+    li
+      small
+        a(href="/memory/#{memory._id}") #{memory.modified}

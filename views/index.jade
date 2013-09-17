@@ -1,0 +1,94 @@
+extends layout
+
+block content
+  if !user
+    #main.pure-g-r
+      .pure-u-1-3
+      .pure-u-1-3.pull-center
+        p#about
+        form(action="/sign-in", method="post").pure-form.pure-form-aligned
+          legend #{title}
+          fieldset
+            .pure-control-group
+              label(for="username") Name
+              input(type="text", name="username", placeholder="Name", autofocus="autofocus")
+            .pure-control-group
+              label(for="password") Password
+              input(type="password", name="password", placeholder="Password")
+            .pure-controls
+              input(type="submit", value="Sign In")
+
+  if user
+    #main.pure-g-r
+      .pure-u-1-3
+        include searchform
+      .pure-u-1-3.pull-center
+        p#about
+        include memoryForm
+        hr
+      .pure-u-1-3
+
+      .pure-u-1-3
+      .pure-u-1-3
+        ul(id="memory-list")
+          for memory in memories
+            include memoryitem
+
+    script
+      window.onload = function() {
+        var messages = [],
+            memories = [],
+            socket = io.connect(window.location.hostname),
+            textField = document.getElementById("memory-text"),
+            sendButton = document.getElementById("send"),
+            linkField = document.getElementById("memory-link"),
+            memoryList = document.getElementById("memory-list"),
+            accountId = document.getElementsByName("uid")[0];
+        socket.on('error', function (data) {
+          if(data) {
+            var html = '';
+            html += '<li style="color:red;"><b>Error: </b>';
+            html += data.details + '</li>';
+            memoryList.innerHTML = html.concat(memoryList.innerHTML);
+          } else {
+            console.log("There is a problem: ", data);
+          }
+        });
+        socket.on('newMemory', function (data) {
+          if(data.text) {
+            memories.push(data);
+            var html = '<li>';
+            if(data.link){
+              html += '<a href="'+data.link+'" target="_blank">'+data.text+'</a></li>';
+            } else {
+              html += data.text+'</li>';
+            }
+            memoryList.innerHTML = html.concat(memoryList.innerHTML);
+          } else {
+            console.log("There is a problem: ", data);
+          }
+        });
+        sendButton.onclick = sendMemory = function() {
+          if(textField.value == "") {
+            alert("Please type something to remember!");
+          } else {
+            var possibleHtml = textField.value;
+            var div = document.createElement("div");
+            div.innerHTML = possibleHtml;
+            var cleanText = div.textContent || div.innerText || "";
+            socket.emit('createMemory', { text: cleanText, link: linkField.value, accountId: accountId.content, time: (new Date) });
+            textField.value = "", linkField.value = "";
+          }
+        };
+        function checkText(evt){
+          if (evt.keyCode == 13) {
+            sendMemory();
+            textField.focus();
+          }
+        }
+        linkField.onkeydown = function(evt) {
+          evt = evt || window.event;
+          checkText(evt);
+        };
+      };
+    include truncate

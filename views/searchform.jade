@@ -1,0 +1,9 @@
+form.pure-form.nav-input(action="/search", method="post")
+  .pure-g
+    .pure-u-3-4
+      if focusSearch
+        input(id="search-text-field", type="text", name="text", placeholder="...", value="#{searchText ? searchText : ''}", autofocus="autofocus")
+      else
+        input(id="search-text-field", type="text", name="text", placeholder="...", value="#{searchText ? searchText : ''}")
+    .pure-u-1-4
+      input(id="search-submit-field", type="submit", value="Search")

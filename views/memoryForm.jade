@@ -1,0 +1,28 @@
+if memory
+  form(id="memory-form", action="#{ '/memory/'+memory._id }", method="post").pure-form.pure-form-aligned
+    legend #{title}
+    fieldset
+      .pure-control-group
+        label(for="description") Text
+        textarea(id="memory-text", type="text", name="text", placeholder="...", autofocus="autofocus")
+          if memory.text
+            | #{memory.text}
+      .pure-control-group
+        label(for="link") Link
+        input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
+      input(id="memory-time", type ="hidden", name="time", value="#{new Date}")
+      
+      .pure-controls
+        input(type="submit", value="#{title}", id="send")
+if !memory
+  #memory-form.pure-form.pure-form-aligned
+    fieldset
+      .pure-control-group
+        label(for="description") Text
+        textarea(id="memory-text", type="text", name="text", placeholder="...", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
+      .pure-control-group
+        label(for="link") Link
+        input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
+      
+      .pure-controls
+        input(type="submit", value="#{title}", id="send")

@@ -1,0 +1,22 @@
+extends layout
+
+block content
+
+  #main.pure-g-r
+    .pure-u-1-3
+      p Your API key: <code>#{user.key}</code>
+    .pure-u-1-3
+      form(action="/account", method="post").pure-form.pure-form-aligned
+        legend #{title}
+        fieldset
+          .pure-control-group
+            label(for="username") Name
+            input(type="text", name="username", placeholder="Name", autofocus="autofocus", value="#{user.username}")
+          .pure-control-group
+            label(for="password") Password
+            input(type="password", name="password", placeholder="Password")
+          .pure-control-group
+            label(for="password") Confirm password
+            input(type="password", name="password_conf", placeholder="Confirm password")
+          .pure-controls
+            input(type="submit", value="Update")
