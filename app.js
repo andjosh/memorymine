@@ -80,7 +80,7 @@ function ensureApiAuth(req, res, next) {
   })
 }
 
-require('./routes/frontEnd')(app, ensureAuthenticated, io);
+require('./routes/frontend')(app, ensureAuthenticated, io);
 require('./routes/api')(app, io, ensureApiAuth);
 io.sockets.on('connection', function (socket) {
     socket.on('createMemory', function (data) {
