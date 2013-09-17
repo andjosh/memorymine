@@ -12,12 +12,13 @@ var Memory = new Schema({
     link: {type: String},
     accountId: {type: String, required: true},
     image: {type: String, default: ''},
-    searchableTime: {type: String}
+    searchableTime: {type: String},
+    searchableUrl: {type: String}
 });
 
 Memory.plugin(troop.timestamp);
 Memory.plugin(troop.keywords, {
-  source: ['text', 'searchableTime'],
+  source: ['text', 'searchableTime', 'searchableUrl'],
   naturalize: true
 })
 Memory.statics.createMemory = function(data, io){
@@ -26,6 +27,7 @@ Memory.statics.createMemory = function(data, io){
   newMemory.link = data.link;
   newMemory.accountId = data.accountId;
   newMemory.searchableTime = moment(data.time).format('dddd MMMM Do YYYY h:mm:ss A');
+  newMemory.searchableUrl = data.searchableUrl;
   newMemory.save(function(err,result){
     if(err){
       console.log(err);

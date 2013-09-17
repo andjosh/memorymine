@@ -11,6 +11,7 @@ if memory
         label(for="link") Link
         input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
       input(id="memory-time", type ="hidden", name="time", value="#{new Date}")
+      input(id="memory-searchable-url", type ="hidden", name="searchableUrl", value="#{memory.searchableUrl}")
       
       .pure-controls
         input(type="submit", value="#{title}", id="send")

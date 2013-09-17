@@ -91,6 +91,8 @@ module.exports = function (app, ensureAuthenticated) {
     Memory.findOne({ _id: req.params.id}, function(err, memory){
       memory.text = req.body.text;
       memory.link = req.body.link;
+      memory.searchableUrl = req.body.searchableUrl;
+      memory.searchableTime = moment(req.body.time).format('dddd MMMM Do YYYY h:mm:ss A');
       memory.image = (req.body.image || '');
       memory.save(function(err, updated){
         if(err) {

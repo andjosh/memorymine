@@ -7,3 +7,37 @@ block content
     .pure-u-1-3.pull-center
       p#about
       include memoryForm
+  script
+    window.onload = function() {
+      var textField = document.getElementById("memory-text"),
+          sendButton = document.getElementById("send"),
+          linkField = document.getElementById("memory-link"),
+          accountId = document.getElementsByName("uid")[0],
+          hiddenUrl = document.getElementById('memory-searchable-url');
+      sendButton.onclick = sendMemory = function() {
+        if(textField.value == "") {
+          alert("Please type something to remember!");
+        } else {
+          var possibleHtml = textField.value;
+          var div = document.createElement("div");
+          div.innerHTML = possibleHtml;
+          textField.value = div.textContent || div.innerText || "";
+          hiddenUrl.value = createSearchableUrl(linkField.value);
+        }
+      };
+      function createSearchableUrl(url){
+        var tmp = document.createElement('a');
+        tmp.href = url;
+        return (tmp.hostname+' '+tmp.pathname);
+      }
+      function checkText(evt){
+        if (evt.keyCode == 13) {
+          sendMemory();
+          textField.focus();
+        }
+      }
+      linkField.onkeydown = function(evt) {
+        evt = evt || window.event;
+        checkText(evt);
+      };
+    };

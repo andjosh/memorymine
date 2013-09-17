@@ -76,10 +76,15 @@ block content
             var div = document.createElement("div");
             div.innerHTML = possibleHtml;
             var cleanText = div.textContent || div.innerText || "";
-            socket.emit('createMemory', { text: cleanText, link: linkField.value, accountId: accountId.content, time: (new Date) });
+            socket.emit('createMemory', { text: cleanText, link: linkField.value, searchableUrl: createSearchableUrl(linkField.value), accountId: accountId.content, time: (new Date) });
             textField.value = "", linkField.value = "";
           }
         };
+        function createSearchableUrl(url){
+          var tmp = document.createElement('a');
+          tmp.href = url;
+          return (tmp.hostname+' '+tmp.pathname);
+        }
         function checkText(evt){
           if (evt.keyCode == 13) {
             sendMemory();
