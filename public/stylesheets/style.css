@@ -44,6 +44,10 @@ input[type="button"]:hover, .btn:hover, button:hover{
   background-color: rgba(94,91,214,0.2);
   border: none;
 }
+input:focus, textarea:focus{
+  border:1px solid #ccc !important;
+  box-shadow: 0 0 3px rgba(94,91,214,0.8) inset !important;
+}
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 /*Nav bar*/
 .pure-menu ul li a{
