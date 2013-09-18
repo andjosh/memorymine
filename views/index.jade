@@ -16,7 +16,7 @@ block content
               label(for="password") Password
               input(type="password", name="password", placeholder="Password")
             .pure-controls
-              input(type="submit", value="Sign In")
+              input(type="submit", value="Sign In", onclick="submitSpinner(this);")
 
   if user
     #main.pure-g-r
@@ -57,9 +57,9 @@ block content
           }
         });
         socket.on('newMemory', function (data) {
-          if(data.text) {
+          if(data.text && (data.accountId == accountId.content)) {
             memories.push(data);
-            var html = '<li>';
+            var html = '<li class="animated fadeInDown">';
             if(data.link){
               html += '<a href="'+data.link+'" target="_blank">'+data.text+'</a></li>';
             } else {

@@ -11,6 +11,7 @@ var express = require('express')
     , passport = require('passport')
     , flash = require('connect-flash')
     , LocalStrategy = require('passport-local').Strategy
+    , TwitterStrategy = require('passport-twitter').Strategy
     , http = require('http')
     , path = require('path')
     , io = require('socket.io')
@@ -58,6 +59,20 @@ app.configure('production', function(){
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
+passport.use(
+  new TwitterStrategy({
+    consumerKey: process.env.TWITTER_CONSUMER_KEY || '1xqlQPtb9lULBlus4fAPxQ',
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET || '7UP0dbI7wEOEjFSpGqfOZpBboXZrvzKG04SuZbC7n3k',
+    callbackURL: process.env.TWITTER_CALLBACK || "http://localhost:5000/auth/twitter/callback",
+    passReqToCallback: true
+  },
+  function(req, token, tokenSecret, profile, done) {
+    Account.findByIdAndUpdate(req.user._id, {twitterToken: token, twitterTokenSecret: tokenSecret, twitterUid: profile.id}, function(err, account) {
+      if(!err){return done(null, req.user);}
+      if(err){console.log(err);}
+    });
+  }
+));
 
 mongoose.connect(mongoUri);
 server.listen(app.get('port'));

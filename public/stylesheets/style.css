@@ -53,8 +53,8 @@ input:focus, textarea:focus{
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 /*Nav bar*/
 .pure-menu ul li a{
-  font-weight: 300;
-  font-family: "Muli";
+  font-weight: 400;
+  font-family: "Telex";
   color: #222;
   border-bottom: 3px solid #fff;
   padding-bottom: 3px;
@@ -71,8 +71,8 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   line-height: 1em !important;
 }
 .memory{
-  font-family: "Telex";
-  font-weight: 400;
+  font-family: "Muli";
+  font-weight: 300;
 }
 .nav-input {
   margin-top: 1.1em;
@@ -119,6 +119,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   background-color: rgba(94,91,214,0.2);
   padding: 0 0.3em;
 }
+.no-display{display: none;}
 #memory-list {
   list-style: none;
   padding: 0;

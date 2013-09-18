@@ -16,7 +16,7 @@ block content
             label(for="password") Password
             input(type="password", name="password", placeholder="Password")
           .pure-controls
-            input(type="submit", value="Sign In")
+            input(type="submit", value="Sign In", onclick="submitSpinner(this);")
             br
             br
             a.btn(href="/register") or Register

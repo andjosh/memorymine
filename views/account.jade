@@ -4,16 +4,13 @@ block content
 
   #main.pure-g-r
     .pure-u-1-3
-      p Your API key:
-        br
-        code #{user.key}
     .pure-u-1-3
       form(action="/account", method="post").pure-form.pure-form-aligned
         legend #{title}
         fieldset
           .pure-control-group
             label(for="username") Name
-            input(type="text", name="username", placeholder="Name", autofocus="autofocus", value="#{user.username}")
+            input(type="text", name="username", placeholder="Name", value="#{user.username}")
           .pure-control-group
             label(for="password") Password
             input(type="password", name="password", placeholder="Password")
@@ -21,4 +18,37 @@ block content
             label(for="password") Confirm password
             input(type="password", name="password_conf", placeholder="Confirm password")
           .pure-controls
-            input(type="submit", value="Update")
+            input(type="submit", value="Update", onclick="submitSpinner(this);")
+      br
+      br
+      form.pure-form.pure-form-aligned
+        legend(id="legend-connect")
+          a(onclick="revealConnect();", href="#connect") Connect
+        fieldset(id="fieldset-connect").no-display
+          .pure-control-group
+            label
+              i.icon-twitter
+            if !user.twitterToken
+              button
+                a(href="/auth/twitter") Connect
+            else
+              button Connected
+          .pure-control-group
+            label
+              i.icon-facebook
+            button
+              a Connect
+          .pure-control-group
+            label
+              | Tent
+            button
+              a Connect
+          .pure-control-group
+            label
+              i.icon-key
+            code #{user.key}
+  script
+    function revealConnect(){
+      document.getElementById('legend-connect').innerHTML = 'Connect To';
+      document.getElementById('fieldset-connect').className = 'animated fadeInDown';
+    }

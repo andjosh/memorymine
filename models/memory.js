@@ -33,7 +33,7 @@ Memory.statics.createMemory = function(data, io){
       console.log(err);
       io.sockets.emit('error', {details: err});
     }
-    if(result){io.sockets.emit('newMemory', { text: result.text, link: result.link, date: result.modified });}
+    if(result){io.sockets.emit('newMemory', { text: result.text, link: result.link, date: result.modified, accountId: result.accountId });}
   });
 };
 module.exports = mongoose.model('Memory', Memory);

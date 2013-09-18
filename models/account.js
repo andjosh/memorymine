@@ -14,6 +14,9 @@ var Account = new Schema({
     admin: { type: Boolean, default: false },
     fullAccess: { type: Boolean, default: false },
     key: { type: String, default: ( Math.random().toString(36).substr(2) + Math.random().toString(36).substr(2) ) },
+    twitterToken: {type: String},
+    twitterTokenSecret: {type: String},
+    twitterUid: {type: String},
     accessToken: String // Used for Remember Me
 });
 

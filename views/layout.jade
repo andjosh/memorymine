@@ -34,3 +34,7 @@ html
     footer.footer
 
     script(src='/socket.io/socket.io.js')
+    script
+      function submitSpinner(element){
+        element.innerHTML += ' <i class="icon-spinner icon-spin"></i>';
+      }

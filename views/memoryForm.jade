@@ -1,6 +1,6 @@
 if memory
   form(id="memory-form", action="#{ '/memory/'+memory._id }", method="post").pure-form.pure-form-aligned
-    legend #{title}
+    legend Editing
     fieldset
       .pure-control-group
         textarea(id="memory-text", rows="5", type="text", name="text", placeholder="...", autofocus="autofocus")
@@ -14,12 +14,12 @@ if memory
       input(id="memory-searchable-url", type ="hidden", name="searchableUrl", value="#{memory.searchableUrl}")
       
       .pure-controls
-        input(type="submit", value="#{title}", id="send")
+        input(type="submit", value="Submit", id="send")
 if !memory
   #memory-form.pure-form.pure-form-aligned
     fieldset
       .pure-control-group
-        textarea(id="memory-text", rows="5", type="text", name="text", placeholder="...", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
+        textarea(id="memory-text", rows="5", type="text", name="text", placeholder="", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
       .pure-control-group
         label(for="link").link-label
           i.icon-link

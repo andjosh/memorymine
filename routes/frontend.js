@@ -8,12 +8,16 @@ var passport = require('passport')
 
 module.exports = function (app, ensureAuthenticated) {
   app.get('/', function(req, res) {
-    Memory.find({ modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
-      for(i=0;i<memories.length;i++){
-        memories[i].modified = moment(memories[i].modified).fromNow();
-      }
-      res.render('index', { title: 'MemoryMine', user: req.user, memories: memories, message: req.flash('message'), error: req.flash('error') });
-    });
+    if(req.user){
+      Memory.find({ accountId: req.user._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
+        for(i=0;i<memories.length;i++){
+          memories[i].modified = moment(memories[i].modified).fromNow();
+        }
+        res.render('index', { title: 'MemoryMine', user: req.user, memories: memories, message: req.flash('message'), error: req.flash('error') });
+      });
+    }else{
+      res.render('index', { title: 'MemoryMine', user: req.user, memories: [], message: req.flash('message'), error: req.flash('error') });
+    }
   });
   app.get('/register', function(req, res) {
     res.render('register', { title: 'Register', user: req.user, message: req.flash('message'), error: req.flash('error') });
@@ -79,7 +83,7 @@ module.exports = function (app, ensureAuthenticated) {
     };
   });
   app.get('/memory/:id', ensureAuthenticated, function(req, res){
-    Memory.findOne({_id:req.params.id}, '-__v').lean().exec(function(err, memory){
+    Memory.findOne({accountId: req.user._id, _id:req.params.id}, '-__v').lean().exec(function(err, memory){
       res.render('memoryEdit', { user: req.user, title : "Edit "+memory.text.slice(0,20), memory: memory, message: req.flash('message'), error: req.flash('error') });
     });
   });
@@ -88,7 +92,11 @@ module.exports = function (app, ensureAuthenticated) {
       text: req.body.text, 
       image: (req.body.image || '')
     };
-    Memory.findOne({ _id: req.params.id}, function(err, memory){
+    Memory.findOne({accountId: req.user._id, _id: req.params.id}, function(err, memory){
+      if(err) {
+        req.flash('error', 'There seems to be a problem with that: '+err)
+        res.redirect('/memory/'+req.params.id);
+      }
       memory.text = req.body.text;
       memory.link = req.body.link;
       memory.searchableUrl = req.body.searchableUrl;
@@ -106,8 +114,15 @@ module.exports = function (app, ensureAuthenticated) {
     });
   });
   app.post('/search', ensureAuthenticated, function(req,res){
-    Memory.find({ keywords: { $in: Memory.extractKeywords(req.body.text) } }).lean().exec(function(err, memories) {
+    Memory.find({ accountId: req.user._id, keywords: { $in: Memory.extractKeywords(req.body.text) } }).lean().exec(function(err, memories) {
       res.render('search', { title: 'Searched: '+req.body.text, user: req.user, memories: memories, searchText: req.body.text, message: req.flash('message'), error: req.flash('error') });
     })
+  });
+
+  app.get('/auth/twitter', passport.authenticate('twitter'));
+  app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
+    req.flash('message', 'Connected to Twitter');
+    console.log(req.user.twitterToken);
+    res.redirect('/account');
   });
 }
