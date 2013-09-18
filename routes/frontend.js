@@ -114,7 +114,7 @@ module.exports = function (app, ensureAuthenticated) {
     });
   });
   app.post('/search', ensureAuthenticated, function(req,res){
-    Memory.find({ accountId: req.user._id, keywords: { $in: Memory.extractKeywords(req.body.text) } }).lean().exec(function(err, memories) {
+    Memory.find({ accountId: req.user._id, keywords: { $in: Memory.extractKeywords(req.body.text) } }, null, {sort:{modified: -1}}).lean().exec(function(err, memories) {
       res.render('search', { title: 'Searched: '+req.body.text, user: req.user, memories: memories, searchText: req.body.text, message: req.flash('message'), error: req.flash('error') });
     })
   });

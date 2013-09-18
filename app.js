@@ -44,7 +44,7 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(flash());
     app.use(express.cookieParser('your secret here'));
-    app.use(express.cookieSession({ secret: 'marybeth and the fox fighting bant', cookie: { maxAge: 1000*60*60 } })); // CHANGE THIS SECRET!
+    app.use(express.cookieSession({ secret: 'marybeth and the fox fighting bant', cookie: { maxAge: 1000*60*60*24 } })); // CHANGE THIS SECRET!
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(app.router);

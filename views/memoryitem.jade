@@ -1,13 +1,11 @@
 if memory.link
   li
-    a(href="#{memory.link}", target="_blank").truncate #{memory.text}
-  ul
-    li
+    a(href="#{memory.link}", target="_blank") #{memory.text}
+    .memory-time
       small
         a(href="/memory/#{memory._id}") #{memory.modified}
 else
-  li.truncate #{memory.text} #{memory.created}
-  ul
-    li
+  li #{memory.text}
+    .memory-time
       small
         a(href="/memory/#{memory._id}") #{memory.modified}
