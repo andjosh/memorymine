@@ -7,7 +7,8 @@ if memory
           if memory.text
             | #{memory.text}
       .pure-control-group
-        label(for="link").link-label Link
+        label(for="link").link-label
+          i.icon-link
         input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
       input(id="memory-time", type ="hidden", name="time", value="#{new Date}")
       input(id="memory-searchable-url", type ="hidden", name="searchableUrl", value="#{memory.searchableUrl}")
@@ -20,8 +21,9 @@ if !memory
       .pure-control-group
         textarea(id="memory-text", rows="5", type="text", name="text", placeholder="...", value="#{memory ? memory.text || '' : ''}", autofocus="autofocus")
       .pure-control-group
-        label(for="link").link-label Link
+        label(for="link").link-label
+          i.icon-link
         input(id="memory-link", type="text", name="link", placeholder="http://", value="#{memory ? memory.link : ''}")
       
       .pure-controls
-        input(type="submit", value="#{title}", id="send")
+        button(type="submit", value="", id="send") <i class="icon-plus"></i> Add

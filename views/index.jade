@@ -26,6 +26,8 @@ block content
         p#about
         include memoryForm
       .pure-u-1-3
+        br
+        #form-error
 
       .pure-u-1-3
       .pure-u-1-3
@@ -42,7 +44,8 @@ block content
             sendButton = document.getElementById("send"),
             linkField = document.getElementById("memory-link"),
             memoryList = document.getElementById("memory-list"),
-            accountId = document.getElementsByName("uid")[0];
+            accountId = document.getElementsByName("uid")[0],
+            errorBox = document.getElementById('form-error');
         socket.on('error', function (data) {
           if(data) {
             var html = '';
@@ -68,17 +71,23 @@ block content
           }
         });
         sendButton.onclick = sendMemory = function() {
-          if(textField.value == "") {
-            alert("Please type something to remember!");
+          if((textField.value == "") || (textField.value == "\n")) {
+            errorBox.className = '';
+            errorBox.innerHTML = '<p class="error">You should type something to remember!</p>';
+            textField.value = null;
+            var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
           } else {
             var possibleHtml = textField.value;
             var div = document.createElement("div");
             div.innerHTML = possibleHtml;
             var cleanText = div.textContent || div.innerText || "";
             socket.emit('createMemory', { text: cleanText, link: linkField.value, searchableUrl: createSearchableUrl(linkField.value), accountId: accountId.content, time: (new Date) });
-            textField.value = "", linkField.value = "";
+            textField.value = null, linkField.value = null;
           }
         };
+        function dismissError(div){
+          div.className = 'animated fadeOutDown';
+        }
         function createSearchableUrl(url){
           var tmp = document.createElement('a');
           tmp.href = url;
@@ -88,9 +97,10 @@ block content
           if (evt.keyCode == 13) {
             sendMemory();
             textField.focus();
+            evt.preventDefault();
           }
         }
-        linkField.onkeydown = function(evt) {
+        linkField.onkeydown = textField.onkeydown = function(evt) {
           evt = evt || window.event;
           checkText(evt);
         };

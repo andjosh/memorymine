@@ -6,4 +6,5 @@ form.pure-form.nav-input(action="/search", method="post")
       else
         input(id="search-text-field", type="text", name="text", placeholder="...", value="#{searchText ? searchText : ''}")
     .pure-u-1-4
-      input(id="search-submit-field", type="submit", value="Search")
+      button(id="search-submit-field", type="submit")
+        i.icon-search

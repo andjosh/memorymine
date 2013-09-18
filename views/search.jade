@@ -14,3 +14,15 @@ block content
       ul(id="memory-list")
         for memory in memories
           include memoryitem
+  script
+    window.onload = function(){
+      function hiliter(word, element) {
+        var rgxp = new RegExp(word, 'g');
+        var repl = '<code>' + word + '</code>';
+        element.innerHTML = element.innerHTML.replace(rgxp, repl);
+      }
+      var list = document.getElementById('memory-list');
+      for(i=0;i<list.childElementCount;i++){
+        hiliter('#{searchText}', list.children[i]);
+      }
+    };

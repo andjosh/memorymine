@@ -1,5 +1,7 @@
 @import url("./pure-min.css");
 @import url("http://fonts.googleapis.com/css?family=Muli:300|Telex");
+@import url("./font-awesome.min.css");
+@import url("./animate-custom.css");
 body {
   font: 14px "Telex", Helvetica, Arial, sans-serif;
   max-width: 1400px;
@@ -39,7 +41,7 @@ input[type="submit"]{
 input[type="submit"]:hover {
   background-color: rgba(94,91,214,0.2);
 }
-input[type="button"]:hover, .btn:hover, button:hover{
+input[type="button"]:hover, .btn:hover, button:hover, #memory-form #send:hover{
   color: #111;
   background-color: rgba(94,91,214,0.2);
   border: none;
@@ -82,11 +84,12 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   margin-top: 5px;
   width: 100%;
 }
-.nav-input input[type="submit"]{
+.nav-input button[type="submit"]{
   padding-bottom: 6px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
   width: auto;
+  margin-top: 5px;
 }
 .nav-input #search-text-field {
   border-top-right-radius: 0px;
@@ -111,6 +114,10 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 }
 .muted{
   opacity: 0.5;
+}
+.hiliter{
+  background-color: rgba(94,91,214,0.2);
+  padding: 0 0.3em;
 }
 #memory-list {
   list-style: none;
@@ -151,4 +158,12 @@ legend{
 }
 #memory-form .pure-controls{
   margin-left: 0;
+}
+@media only screen and (max-width :480px){
+  .nav-input button[type="submit"]{
+    width: 100%;
+  }
+  #memory-form .link-label, .link-label{
+  display: none;
+}
 }

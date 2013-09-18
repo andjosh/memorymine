@@ -8,10 +8,12 @@ html
     if user
       meta(name="uid", content="#{user._id}")
   body
-    if message.length > 0
-      p#message.pull-center.message #{message}
-    if error.length > 0
-      p#error.pull-center.error #{error}
+    #message
+      if message.length > 0
+        p.pull-center.message #{message}
+    #error
+      if error.length > 0
+        p.pull-center.error #{error}
     .pure-g-r
       .pure-u-1-2
         .pure-menu.pure-menu-open.pure-menu-horizontal
@@ -20,9 +22,11 @@ html
               a.brand-nav(href="/") <span class="memory">Memory</span>Mine
             if user
               li
-                a(href="/account") Account
+                a(href="/account")
+                  i.icon-cog
               li
-                a(href="/sign-out") Sign Out
+                a(href="/sign-out")
+                  i.icon-signout
             if (!user)
 
     block content
