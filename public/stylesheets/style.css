@@ -33,6 +33,13 @@ input[type="button"], input[type="submit"], .btn, button{
   cursor: pointer;
   transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
 }
+button.disabled{
+  background-color: #eee;
+  cursor: text;
+}
+button.disabled:hover{
+  background-color: #eee;
+}
 input[type="submit"]{
   color: #111;
   background-color: rgba(94,91,214,0.3);

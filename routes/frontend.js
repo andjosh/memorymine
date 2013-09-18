@@ -120,9 +120,13 @@ module.exports = function (app, ensureAuthenticated) {
   });
 
   app.get('/auth/twitter', passport.authenticate('twitter'));
-  app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
+  app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/account' }), function(req, res) {
     req.flash('message', 'Connected to Twitter');
-    console.log(req.user.twitterToken);
+    res.redirect('/account');
+  });
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['user_status', 'user_checkins'] }));
+  app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/account' }), function(req, res) {
+    req.flash('message', 'Connected to Facebook');
     res.redirect('/account');
   });
 }

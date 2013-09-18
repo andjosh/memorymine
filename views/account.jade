@@ -32,12 +32,15 @@ block content
               button
                 a(href="/auth/twitter") Connect
             else
-              button Connected
+              button.disabled Connected
           .pure-control-group
             label
               i.icon-facebook
-            button
-              a Connect
+            if !user.facebookToken
+              button
+                a(href="/auth/facebook") Connect
+            else
+              button.disabled Connected
           .pure-control-group
             label
               | Tent

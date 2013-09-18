@@ -23,6 +23,7 @@
     "async": "*",
     "mongoose-troop": "0.0.8",
     "moment": "~2.2.1",
-    "passport-twitter": "~1.0.2"
+    "passport-twitter": "~1.0.2",
+    "passport-facebook": "~1.0.1"
   }
 }

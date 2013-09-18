@@ -17,6 +17,9 @@ var Account = new Schema({
     twitterToken: {type: String},
     twitterTokenSecret: {type: String},
     twitterUid: {type: String},
+    facebookToken: {type: String},
+    facebookTokenRefresh: {type: String},
+    facebookUid: {type: String},
     accessToken: String // Used for Remember Me
 });
 

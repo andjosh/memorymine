@@ -12,6 +12,7 @@ var express = require('express')
     , flash = require('connect-flash')
     , LocalStrategy = require('passport-local').Strategy
     , TwitterStrategy = require('passport-twitter').Strategy
+    , FacebookStrategy = require('passport-facebook').Strategy
     , http = require('http')
     , path = require('path')
     , io = require('socket.io')
@@ -68,6 +69,20 @@ passport.use(
   },
   function(req, token, tokenSecret, profile, done) {
     Account.findByIdAndUpdate(req.user._id, {twitterToken: token, twitterTokenSecret: tokenSecret, twitterUid: profile.id}, function(err, account) {
+      if(!err){return done(null, req.user);}
+      if(err){console.log(err);}
+    });
+  }
+));
+passport.use(
+  new FacebookStrategy({
+    clientID: process.env.FACEBOOK_APP_ID || '409533869146692',
+    clientSecret: process.env.FACEBOOK_APP_SECRET || 'aef348aa9d70b32e7d76d7b2ac5450bc',
+    callbackURL: "http://localhost:5000/auth/facebook/callback",
+    passReqToCallback: true
+  },
+  function(req, accessToken, refreshToken, profile, done) {
+    Account.findByIdAndUpdate(req.user._id, {facebookToken: accessToken, facebookTokenRefresh: (refreshToken || ''), facebookUid: profile.id}, function(err, account) {
       if(!err){return done(null, req.user);}
       if(err){console.log(err);}
     });
