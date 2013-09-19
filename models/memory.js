@@ -37,7 +37,7 @@ Memory.statics.createMemory = function(data, io){
   });
 };
 Memory.statics.searchQuery = function(data, io){
-  this.find({ accountId: data.accountId, keywords: { $in: this.extractKeywords(data.query) } }, '-__v', {sort:{modified: -1}}).lean().exec(function(err, memories) {
+  this.find({ accountId: data.accountId, keywords: { $all: this.extractKeywords(data.query) } }, '-__v', {sort:{modified: -1}}).lean().exec(function(err, memories) {
     if(err){
       console.log(err);
       io.sockets.emit('error', {details: err});
