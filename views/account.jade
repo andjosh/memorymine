@@ -18,7 +18,7 @@ block content
             label(for="password") Confirm password
             input(type="password", name="password_conf", placeholder="Confirm password")
           .pure-controls
-            input(type="submit", value="Update", onclick="submitSpinner(this);")
+            input(type="submit", value="Update")
       br
       br
       form.pure-form.pure-form-aligned
@@ -29,23 +29,20 @@ block content
             label
               i.icon-twitter
             if !user.twitterToken
-              button
-                a(href="/auth/twitter") Connect
+              a.btn(href="/auth/twitter") Connect
             else
               button.disabled Connected
           .pure-control-group
             label
               i.icon-facebook
             if !user.facebookToken
-              button
-                a(href="/auth/facebook") Connect
+              a.btn(href="/auth/facebook") Connect
             else
               button.disabled Connected
           .pure-control-group
             label
               | Tent
-            button
-              a Connect
+            a.btn Connect
           .pure-control-group
             label
               i.icon-key

@@ -8,29 +8,30 @@ html
     if user
       meta(name="uid", content="#{user._id}")
   body
-    #message
-      if message.length > 0
-        p.pull-center.message #{message}
-    #error
-      if error.length > 0
-        p.pull-center.error #{error}
-    .pure-g-r
-      .pure-u-1-2
-        #menu-bar.pure-menu.pure-menu-open.pure-menu-horizontal
-          ul.otherly
-            li
-              a.brand-nav(href="/") <span class="memory">Memory</span>Mine
-            if user
+    main.container
+      #message
+        if message.length > 0
+          p.pull-center.message #{message}
+      #error
+        if error.length > 0
+          p.pull-center.error #{error}
+      .pure-g-r
+        .pure-u-1-2
+          #menu-bar.pure-menu.pure-menu-open.pure-menu-horizontal
+            ul.otherly
               li
-                a(href="/account")
-                  i.icon-cog
-              li
-                a(href="/sign-out")
-                  i.icon-signout
-            if (!user)
+                a.brand-nav(href="/") <span class="memory">Memory</span>Mine
+              if user
+                li
+                  a.account-nav(href="/account")
+                    i.icon-cog
+                li
+                  a.sign-out-nav(href="/sign-out")
+                    i.icon-signout
+              if (!user)
 
-    block content
+      block content
 
-    footer.footer
+      footer.footer
 
     script(src='/socket.io/socket.io.js')

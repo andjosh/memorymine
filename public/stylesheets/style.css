@@ -4,9 +4,11 @@
 @import url("./animate-custom.css");
 body {
   font: 14px "Telex", Helvetica, Arial, sans-serif;
+  background-color: #fcfcfc;
+}
+.container{
   max-width: 1400px;
   margin: 0 auto;
-  background-color: #fcfcfc;
 }
 h1, h2, h3, h4{
   font-family: "Muli";
@@ -16,18 +18,18 @@ h1, h2, h3, h4{
   margin: 0 5px;
 }
 a {
-  color: #5e5bd6;
+  color: #5171ba;
   text-decoration: none;
   cursor: pointer;
   transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
 }
 a:hover{
-  color: rgba(94,91,214,0.75);
+  color: rgba(81,113,186,0.75);
 }
 .transition{transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;}
 input[type="button"], input[type="submit"], .btn, button{
   border: none;
-  background: rgba(94,91,214,0.3);
+  background: rgba(127,202,97,0.75);
   /*#402cf3*/
   color: #111;
   padding: 0.3em 1em;
@@ -44,20 +46,20 @@ button.disabled:hover{
 }
 input[type="submit"]{
   color: #111;
-  background-color: rgba(94,91,214,0.3);
+  background-color: rgba(127,202,97,0.75);
   /*#23f02f*/
 }
 input[type="submit"]:hover {
-  background-color: rgba(94,91,214,0.2);
+  background-color: rgba(127,202,97,0.5);
 }
 input[type="button"]:hover, .btn:hover, button:hover, #memory-form #send:hover{
   color: #111;
-  background-color: rgba(94,91,214,0.2);
+  background-color: rgba(127,202,97,0.5);
   border: none;
 }
 input:focus, textarea:focus{
   border:1px solid #ccc !important;
-  box-shadow: 0 0 3px rgba(94,91,214,0.8) inset !important;
+  box-shadow: 0 0 3px rgba(127,202,97,0.8) inset !important;
 }
 textarea{
   font: 14px "Telex" !important;
@@ -79,12 +81,19 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   padding-bottom: 3px;
 }
 .pure-menu ul li a:hover{
-  border-bottom: 3px solid rgba(94,91,214,0.75) !important;
+  border-bottom: 3px solid rgba(81,113,186,0.75);
+  background: none;
+}
+.account-nav:hover{
+  border-bottom: 3px solid rgba(127,202,97,0.75) !important;
+  background: none;
+}
+.sign-out-nav:hover{
+  border-bottom: 3px solid rgba(194,89,117,0.75) !important;
   background: none;
 }
 .brand-nav{
   padding-top: 0;
-  color: rgba(94,91,214,1) !important;
   font-size: 1.5em;
   padding-bottom: 3px !important;
   line-height: 1em !important;
@@ -144,7 +153,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   text-align: center;
 }
 .hiliter{
-  color: #5e5bd6;
+  color: rgb(194,89,117);
   font-style: italic;
 }
 .no-display{display: none;}
@@ -154,6 +163,9 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 }
 #results-list div.clear-search{
   padding: 10px;
+}
+.clear-search a{
+  color: rgb(194,89,117);
 }
 #memory-list, #results-list {
   list-style: none;
