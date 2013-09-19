@@ -8,6 +8,7 @@ block content
       p#about
       form(action="/register", method="post").pure-form.pure-form-aligned
         legend #{title}
+          a.btn.alt-btn(href="/sign-in") Sign In
         fieldset
           .pure-control-group
             label(for="username") Name
@@ -20,6 +21,3 @@ block content
             input(type="password", name="password_conf", placeholder="Confirm password")
           .pure-controls
             input(type="submit", value="Register")
-            br
-            br
-            a.btn(href="/sign-in") or Sign In
