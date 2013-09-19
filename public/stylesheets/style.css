@@ -17,6 +17,7 @@ h1, h2, h3, h4{
 a {
   color: #5e5bd6;
   text-decoration: none;
+  cursor: pointer;
   transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
 }
 a:hover{
@@ -57,6 +58,9 @@ input:focus, textarea:focus{
   border:1px solid #ccc !important;
   box-shadow: 0 0 3px rgba(94,91,214,0.8) inset !important;
 }
+textarea{
+  font: 14px "Telex" !important;
+}
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 /*Nav bar*/
 .pure-menu ul li a{
@@ -91,7 +95,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   margin-top: 5px;
   width: 100%;
 }
-.nav-input button[type="submit"]{
+.nav-input #search-submit-field{
   padding-bottom: 6px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
@@ -122,16 +126,26 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 .muted{
   opacity: 0.5;
 }
+.text-center{
+  text-align: center;
+}
 .hiliter{
-  background-color: rgba(94,91,214,0.2);
-  padding: 0 0.3em;
+  color: #5e5bd6;
+  font-style: italic;
 }
 .no-display{display: none;}
-#memory-list {
+#results-list{
+  margin:3px 40px 0 15px;
+  max-width: 356px;
+}
+#results-list div.clear-search{
+  padding: 10px;
+}
+#memory-list, #results-list {
   list-style: none;
   padding: 0;
 }
-#memory-list li {
+#memory-list li, #results-list li {
   padding: 1em;
   overflow: hidden;
   transition: 0.3s;-moz-transition: 0.3s;-webkit-transition: 0.3s;-o-transition: 0.3s;
@@ -139,18 +153,18 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   border-radius: 3px;
   margin-bottom: 1em;
 }
-#memory-list li:hover {
+#memory-list li:hover, #results-list li:hover {
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
-#memory-list ul {
+#memory-list ul, #results-list ul {
   margin-top: 0;
 }
-#memory-list .memory-time{
+#memory-list .memory-time, #results-list .memory-time{
   padding: 0;
   margin-top: 10px;
   box-shadow: none;
 }
-#memory-list li small{
+#memory-list li small, #results-list li small{
   opacity: 0.5;
   float: right;
 }
@@ -172,11 +186,23 @@ legend{
 #memory-form .pure-controls{
   margin-left: 0;
 }
+@media only screen and (max-width :1000px){
+  .wide-only{
+    display: none;
+  }
+  .wide-half{
+    width: 50%;
+  }
+}
 @media only screen and (max-width :480px){
   .nav-input button[type="submit"]{
     width: 100%;
   }
   #memory-form .link-label, .link-label{
-  display: none;
-}
+    display: none;
+  }
+  #results-list{
+    margin-right:15px;
+    width: auto;
+  }
 }

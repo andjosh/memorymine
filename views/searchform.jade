@@ -1,4 +1,4 @@
-form.pure-form.nav-input(action="/search", method="post")
+form.pure-form.nav-input
   .pure-g
     .pure-u-3-4
       if focusSearch
@@ -6,5 +6,5 @@ form.pure-form.nav-input(action="/search", method="post")
       else
         input(id="search-text-field", type="text", name="text", placeholder="", value="#{searchText ? searchText : ''}")
     .pure-u-1-4
-      button(id="search-submit-field", type="submit")
+      button(id="search-submit-field")
         i.icon-search

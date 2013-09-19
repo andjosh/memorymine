@@ -33,7 +33,18 @@ Memory.statics.createMemory = function(data, io){
       console.log(err);
       io.sockets.emit('error', {details: err});
     }
-    if(result){io.sockets.emit('newMemory', { text: result.text, link: result.link, date: result.modified, accountId: result.accountId });}
+    if(result){io.sockets.emit('newMemory', { text: result.text, link: result.link, searchableTime: moment(result.searchableTime).fromNow(), _id: result._id, accountId: result.accountId });}
+  });
+};
+Memory.statics.searchQuery = function(data, io){
+  this.find({ accountId: data.accountId, keywords: { $in: this.extractKeywords(data.query) } }, '-__v', {sort:{modified: -1}}).lean().exec(function(err, memories) {
+    if(err){
+      console.log(err);
+      io.sockets.emit('error', {details: err});
+    }
+    if(memories){
+      io.sockets.emit('searchResult', { memories: memories, searchText: data.query, accountId: data.accountId });
+    };
   });
 };
 module.exports = mongoose.model('Memory', Memory);

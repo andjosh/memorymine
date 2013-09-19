@@ -20,20 +20,17 @@ block content
 
   if user
     #main.pure-g-r
-      .pure-u-1-3
+      .pure-u-1-6.wide-only
+      .pure-u-1-3.wide-half
         include searchform
-      .pure-u-1-3.pull-center
-        p#about
-        include memoryForm
-      .pure-u-1-3
-        br
+        #results-list
+      .pure-u-1-3.pull-center.wide-half
         #form-error
-
-      .pure-u-1-3
-      .pure-u-1-3
+        include memoryForm
         ul(id="memory-list")
           for memory in memories
             include memoryitem
+      .pure-u-1-6.wide-only
 
     script
       window.onload = function() {
@@ -44,8 +41,11 @@ block content
             sendButton = document.getElementById("send"),
             linkField = document.getElementById("memory-link"),
             memoryList = document.getElementById("memory-list"),
+            resultsList = document.getElementById("results-list"),
             accountId = document.getElementsByName("uid")[0],
-            errorBox = document.getElementById('form-error');
+            errorBox = document.getElementById('form-error'),
+            searchButton = document.getElementById('search-submit-field'),
+            searchField = document.getElementById('search-text-field');
         socket.on('error', function (data) {
           if(data) {
             var html = '';
@@ -58,14 +58,33 @@ block content
         });
         socket.on('newMemory', function (data) {
           if(data.text && (data.accountId == accountId.content)) {
-            memories.push(data);
             var html = '<li class="animated fadeInDown">';
             if(data.link){
-              html += '<a href="'+data.link+'" target="_blank">'+data.text+'</a></li>';
+              html += '<a href="'+data.link+'" target="_blank">'+data.text+'</a><div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             } else {
-              html += data.text+'</li>';
+              html += data.text+'<div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             }
             memoryList.innerHTML = html.concat(memoryList.innerHTML);
+          } else {
+            console.log("There is a problem: ", data);
+          }
+        });
+        socket.on('searchResult', function (data) {
+          if(data.accountId == accountId.content){
+            resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);"><i class="icon-remove-sign"></i></a></div>';
+            for(i=0;i<data.memories.length;i++){
+              var html = '<li class="animated fadeInDown">';
+              if(data.memories[i].link){
+                html += '<a href="'+data.memories[i].link+'" target="_blank">'+data.memories[i].text+'</a><div class="memory-time"><small><a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
+              } else {
+                html += data.memories[i].text+'<div class="memory-time"><small><a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
+              }
+              resultsList.innerHTML += html
+            }
+            if(data.memories.length == 0){
+              resultsList.innerHTML += '<p class="muted text-center">No memory of that keyword.</p>';
+            }
+            var hiliteTimeout = window.setTimeout(hiliteResults,1000,data.searchText);
           } else {
             console.log("There is a problem: ", data);
           }
@@ -85,6 +104,16 @@ block content
             textField.value = null, linkField.value = null;
           }
         };
+        searchButton.onclick = sendSearch = function() {
+          if((searchField.value == "") || (searchField.value == "\n")) {
+            errorBox.className = '';
+            errorBox.innerHTML = '<p class="error">You should type something to search!</p>';
+            searchField.value = null;
+            var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
+          } else {
+            socket.emit('sendSearch', { query: searchField.value, accountId: accountId.content, });
+          }
+        };
         function dismissError(div){
           div.className = 'animated fadeOutDown';
         }
@@ -99,10 +128,41 @@ block content
             textField.focus();
             evt.preventDefault();
           }
-        }
+        };
+        function checkSearch(evt){
+          if (evt.keyCode == 13) {
+            sendSearch();
+            searchField.select();
+            evt.preventDefault();
+          }
+        };
         linkField.onkeydown = textField.onkeydown = function(evt) {
           evt = evt || window.event;
           checkText(evt);
         };
+        searchField.onkeydown = searchButton.onkeydown = function(evt) {
+          evt = evt || window.event;
+          checkSearch(evt);
+        };
+        function hiliteResults(word){
+          for(i=1;i<resultsList.childElementCount;i++){
+            hiliter(word, resultsList.children[i]);
+          }
+        }
+        function hiliter(word, element) {
+          var rgxp = new RegExp(word, 'i');
+          var repl = '<span class="hiliter">' + word + '</span>';
+          element.innerHTML = element.innerHTML.replace(rgxp, repl);
+        };
       };
+      function clearSearch(element){
+        for(i=0;i<element.childElementCount;i++){
+          element.children[i].className += ' animated fadeOutDown';
+        }
+        var clearSearchTimeout = window.setTimeout(clearSearchInner, 700, element);
+        var input = document.getElementById('search-text-field');
+        input.value = null;
+        input.focus();
+      };
+      function clearSearchInner(element){element.innerHTML = null;};
     include truncate

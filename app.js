@@ -113,9 +113,12 @@ function ensureApiAuth(req, res, next) {
 require('./routes/frontend')(app, ensureAuthenticated, io);
 require('./routes/api')(app, io, ensureApiAuth);
 io.sockets.on('connection', function (socket) {
-    socket.on('createMemory', function (data) {
-      Memory.createMemory(data, io)
-    });
+  socket.on('createMemory', function (data) {
+    Memory.createMemory(data, io);
+  });
+  socket.on('sendSearch', function (data) {
+    Memory.searchQuery(data, io);
+  });
 });
 
 app.configure('development', function(){
