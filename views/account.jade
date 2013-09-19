@@ -31,7 +31,9 @@ block content
             if !user.twitterToken
               a.btn(href="/auth/twitter") Connect
             else
-              button.disabled Connected
+              a.btn.disabled Connected
+            br
+            br
           .pure-control-group
             label
               i.icon-facebook
@@ -39,10 +41,14 @@ block content
               a.btn(href="/auth/facebook") Connect
             else
               button.disabled Connected
+            br
+            br
           .pure-control-group
             label
               | Tent
             a.btn Connect
+            br
+            br
           .pure-control-group
             label
               i.icon-key

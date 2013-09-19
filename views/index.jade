@@ -69,6 +69,7 @@ block content
               html += data.text+'<div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             }
             memoryList.innerHTML = html.concat(memoryList.innerHTML);
+            var cleanNewMemory = window.setTimeout(cleanMemory, 1000, memoryList.children[0]);
           } else {
             console.log("There is a problem: ", data);
           }
@@ -125,6 +126,9 @@ block content
           var tmp = document.createElement('a');
           tmp.href = url;
           return (tmp.hostname+' '+tmp.pathname);
+        }
+        function cleanMemory(element){
+          element.className = null;
         }
         function checkText(evt){
           if (evt.keyCode == 13) {
