@@ -19,9 +19,9 @@ html
         .pure-u-1-2
           #menu-bar.pure-menu.pure-menu-open.pure-menu-horizontal
             ul.otherly
-              li
-                a.brand-nav(href="/") <span class="memory">Memory</span>Mine
               if user
+                li
+                  a.brand-nav(href="/") <span class="memory">Memory</span>Mine
                 li
                   a.account-nav(href="/account")
                     i.icon-cog
@@ -29,9 +29,24 @@ html
                   a.sign-out-nav(href="/sign-out")
                     i.icon-signout
               if (!user)
+                li
+                  a.brand-nav-inverse(href="/") <span class="memory">Memory</span>Mine
 
       block content
 
       footer.footer
 
     script(src='/socket.io/socket.io.js')
+    script
+      function togglePasswordFields(element){
+        var fields = document.getElementsByClassName('password-field');
+        for(i=0;i<fields.length;i++){
+          if(fields[i].type == 'password'){
+            fields[i].type = 'text';
+            element.innerHTML = '<i class="icon-eye-close"></i>';
+          }else{
+            fields[i].type = 'password';
+            element.innerHTML = '<i class="icon-eye-open"></i>';
+          }
+        }
+      }

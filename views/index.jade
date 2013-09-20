@@ -2,25 +2,7 @@ extends layout
 
 block content
   if !user
-    | </main>
-    #home-hero
-    .container
-      .pure-g-r
-        .pure-u-1-3
-        .pure-u-1-3.pull-center
-          p#about
-          form(action="/sign-in", method="post").pure-form.pure-form-aligned
-            legend Sign In
-              a.btn.alt-btn(href="/register") Register
-            fieldset
-              .pure-control-group
-                label(for="username") Name
-                input(type="text", name="username", placeholder="Name", autofocus="autofocus")
-              .pure-control-group
-                label(for="password") Password
-                input(type="password", name="password", placeholder="Password")
-              .pure-controls
-                input(type="submit", value="Sign In")
+    include welcome
 
   if user
     .pure-g-r

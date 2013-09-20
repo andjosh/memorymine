@@ -69,6 +69,14 @@ input[type="text"]{
   background-color: white;
 }
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
+#home-hero{
+  margin: -4em 0 0 0;
+  height: 250px;
+  background-color: #5171ba;
+}
+#home-hero .pure-u-1-3{
+  height: 100%;
+}
 /*Nav bar*/
 #menu-bar{
   background-color: inherit;
@@ -97,6 +105,17 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   font-size: 1.5em;
   padding-bottom: 3px !important;
   line-height: 1em !important;
+}
+.brand-nav-inverse{
+  padding-top: 0;
+  font-size: 1.5em;
+  padding-bottom: 3px !important;
+  line-height: 1em !important;
+  color: #fcfcfc !important;
+}
+.brand-nav-inverse:hover{
+  border-bottom: 3px solid rgba(255,255,255,0.75) !important;
+  background: none;
 }
 .memory{
   font-family: "Muli";
@@ -128,6 +147,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   font-size: 0.6em;
   font-family: 'Telex';
 }
+.password-toggle{padding-left: 1em;}
 .message, .error {
   line-height: 3em;
   margin: 0 0 1em 0;
@@ -232,4 +252,5 @@ legend{
     margin-right:15px;
     width: auto;
   }
+  .password-toggle{display: none;}
 }
