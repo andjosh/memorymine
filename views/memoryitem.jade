@@ -3,17 +3,25 @@ if memory.link
     a(href="#{memory.link}", target="_blank") #{memory.text}
     .memory-time
       small
-        if memory.tweetId
-          a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
-            i.icon-twitter.icon-large
+        if memory.tweetId || memory.facebookId
+          if memory.tweetId
+            a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
+              i.icon-twitter.icon-large
+          else
+            a(href="http://www.facebook.com/permalink.php?id=#{user.facebookUid}&v=wall&story_fbid=#{memory.facebookId.split('_').pop()}", target="_blank")
+              i.icon-facebook.icon-large
         else
           a(href="/memory/#{memory._id}") #{memory.modified}
 else
   li #{memory.text}
     .memory-time
       small
-        if memory.tweetId
-          a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
-            i.icon-twitter.icon-large
+        if memory.tweetId || memory.facebookId
+          if memory.tweetId
+            a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
+              i.icon-twitter.icon-large
+          else
+            a(href="http://www.facebook.com/permalink.php?id=#{user.facebookUid}&v=wall&story_fbid=#{memory.facebookId.split('_').pop()}", target="_blank")
+              i.icon-facebook.icon-large
         else
           a(href="/memory/#{memory._id}") #{memory.modified}

@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     , twitter = require('twitter')
     , fb = require('fb')
     , twHandler = require('./lib/twitterHandler')
+    , fbHandler = require('./lib/facebookHandler')
     , fs = require('fs')
     , config = JSON.parse(fs.readFileSync('./config.json'));
   // Define what/which mongo to yell at
@@ -24,15 +25,23 @@ module.exports = function(grunt) {
     // Connect mongoose
     mongoose.connect(mongoUri);
     Account.find().lean().exec(function(err,accounts){
-      for(i=0;i<accounts.length;i++){
-        if(accounts[i].facebookToken){
-          fb.setAccessToken(accounts[i].facebookToken);
-          fb.api(accounts[i].facebookUid, { fields: ['id', 'posts', 'photos'] }, function(resp) {
-            console.log(resp);
-          });
-        }
-      };
-      done();
+      var i=0;last=accounts.length;
+      (function loop() {
+        if(i<last){
+          if(accounts[i].facebookToken){
+            fb.setAccessToken(accounts[i].facebookToken);
+            fb.api(accounts[i].facebookUid, { fields: ['id', 'posts'] }, function(resp) {
+              fbHandler.postsHandler({accountId:accounts[i]._id}, resp.posts.data, function(){
+                fb.api(accounts[i].facebookUid, { fields: ['id', 'tagged'] }, function(resp) {
+                  fbHandler.taggedHandler({accountId:accounts[i]._id}, resp.tagged.data, function(){
+                    i++;loop();
+                  })
+                });
+              })
+            });
+          }
+        }else{done();}
+      })();
     })
   });
   grunt.registerTask('pullTwitter', 'Pull tweets for all the users', function() {

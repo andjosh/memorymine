@@ -29,6 +29,7 @@ block content
             memoryList = document.getElementById("memory-list"),
             resultsList = document.getElementById("results-list"),
             accountId = document.getElementsByName("uid")[0],
+            facebookUid = document.getElementsByName("fbid")[0],
             errorBox = document.getElementById('form-error'),
             searchButton = document.getElementById('search-submit-field'),
             searchField = document.getElementById('search-text-field');
@@ -68,6 +69,8 @@ block content
               }
               if(data.memories[i].tweetId){
                 html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else if(data.memories[i].facebookId){
+                html+='<a href="http://www.facebook.com/permalink.php?id='+facebookUid.content+'&v=wall&story_fbid='+data.memories[i].facebookId.split('_').pop()+'" target="_blank"><i class="icon-facebook"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
               }else{
                 html+='<a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
               }

@@ -7,6 +7,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     if user
       meta(name="uid", content="#{user._id}")
+      meta(name="fbid", content="#{user.facebookUid}")
   body
     main.container
       #message

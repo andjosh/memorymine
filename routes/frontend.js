@@ -126,21 +126,15 @@ module.exports = function (app, ensureAuthenticated) {
 
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/account' }), function(req, res) {
-    var twit = new twitter({
-      consumer_key: process.env.TWITTER_CONSUMER_KEY || config.twitter.consumer_key,
-      consumer_secret: process.env.TWITTER_CONSUMER_SECRET || config.twitter.consumer_secret,
-      access_token_key: req.user.twitterToken,
-      access_token_secret: req.user.twitterTokenSecret
-    });
     req.flash('message', 'Connected to Twitter!');
     res.redirect('/account');
   });
-  app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['user_status', 'user_checkins'] }));
+  app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['user_status', 'user_checkins', 'read_stream'] }));
   app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/account' }), function(req, res) {
-    fb.setAccessToken(req.user.facebookToken);
-    fb.api(req.user.facebookUid, { fields: ['id', 'posts', 'photos'] }, function(resp) {
-      console.log(resp);
-    });
+    // fb.setAccessToken(req.user.facebookToken);
+    // fb.api(req.user.facebookUid, { fields: ['id', 'posts', 'photos'] }, function(resp) {
+    //   console.log(resp);
+    // });
     req.flash('message', 'Connected to Facebook!');
     res.redirect('/account');
   });

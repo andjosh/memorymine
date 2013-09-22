@@ -16,6 +16,9 @@ var Memory = new Schema({
     searchableUrl: {type: String},
     tweetId:{type: String},
     tweetType: {type: String},
+    facebookType: {type: String},
+    facebookLink:{type:String},
+    facebookId: {type: String},
     keywordBin: {type: String}
 });
 
