@@ -4,7 +4,12 @@
 var passport = require('passport')
     , Account = require('../models/account')
     , Memory = require('../models/memory')
-    , moment = require('moment');
+    , moment = require('moment')
+    , twitter = require('twitter')
+    , fb = require('fb')
+    , twHandler = require('../lib/twitterHandler')
+    , fs = require('fs')
+    , config = JSON.parse(fs.readFileSync('./config.json'));
 
 module.exports = function (app, ensureAuthenticated) {
   app.get('/', function(req, res) {
@@ -121,12 +126,22 @@ module.exports = function (app, ensureAuthenticated) {
 
   app.get('/auth/twitter', passport.authenticate('twitter'));
   app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/account' }), function(req, res) {
-    req.flash('message', 'Connected to Twitter');
+    var twit = new twitter({
+      consumer_key: process.env.TWITTER_CONSUMER_KEY || config.twitter.consumer_key,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET || config.twitter.consumer_secret,
+      access_token_key: req.user.twitterToken,
+      access_token_secret: req.user.twitterTokenSecret
+    });
+    req.flash('message', 'Connected to Twitter!');
     res.redirect('/account');
   });
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['user_status', 'user_checkins'] }));
   app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/account' }), function(req, res) {
-    req.flash('message', 'Connected to Facebook');
+    fb.setAccessToken(req.user.facebookToken);
+    fb.api(req.user.facebookUid, { fields: ['id', 'posts', 'photos'] }, function(resp) {
+      console.log(resp);
+    });
+    req.flash('message', 'Connected to Facebook!');
     res.redirect('/account');
   });
 }

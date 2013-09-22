@@ -24,6 +24,8 @@
     "mongoose-troop": "0.0.8",
     "moment": "~2.2.1",
     "passport-twitter": "~1.0.2",
-    "passport-facebook": "~1.0.1"
+    "passport-facebook": "~1.0.1",
+    "twitter": "~0.2.2",
+    "fb": "~0.6.2"
   }
 }

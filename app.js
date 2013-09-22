@@ -17,7 +17,9 @@ var express = require('express')
     , path = require('path')
     , io = require('socket.io')
     , Account = require('./models/account')
-    , Memory = require('./models/memory');
+    , Memory = require('./models/memory')
+    , fs = require('fs')
+    , config = JSON.parse(fs.readFileSync('./config.json'));
 
 var app = express();
 var server = http.createServer(app);
@@ -62,9 +64,9 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 passport.use(
   new TwitterStrategy({
-    consumerKey: process.env.TWITTER_CONSUMER_KEY || '1xqlQPtb9lULBlus4fAPxQ',
-    consumerSecret: process.env.TWITTER_CONSUMER_SECRET || '7UP0dbI7wEOEjFSpGqfOZpBboXZrvzKG04SuZbC7n3k',
-    callbackURL: process.env.TWITTER_CALLBACK || "http://localhost:5000/auth/twitter/callback",
+    consumerKey: process.env.TWITTER_CONSUMER_KEY || config.twitter.consumer_key,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET || config.twitter.consumer_secret,
+    callbackURL: config.twitter.callbackURL,
     passReqToCallback: true
   },
   function(req, token, tokenSecret, profile, done) {
@@ -76,9 +78,9 @@ passport.use(
 ));
 passport.use(
   new FacebookStrategy({
-    clientID: process.env.FACEBOOK_APP_ID || '409533869146692',
-    clientSecret: process.env.FACEBOOK_APP_SECRET || 'aef348aa9d70b32e7d76d7b2ac5450bc',
-    callbackURL: "http://localhost:5000/auth/facebook/callback",
+    clientID: process.env.FACEBOOK_APP_ID || config.facebook.clientID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET || config.facebook.clientSecret,
+    callbackURL: config.facebook.callbackURL,
     passReqToCallback: true
   },
   function(req, accessToken, refreshToken, profile, done) {

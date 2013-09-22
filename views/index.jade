@@ -62,9 +62,14 @@ block content
             for(i=0;i<data.memories.length;i++){
               var html = '<li class="animated fadeInDown">';
               if(data.memories[i].link){
-                html += '<a href="'+data.memories[i].link+'" target="_blank">'+data.memories[i].text+'</a><div class="memory-time"><small><a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
+                html += '<a href="'+data.memories[i].link+'" target="_blank">'+data.memories[i].text+'</a><div class="memory-time"><small>';
               } else {
-                html += data.memories[i].text+'<div class="memory-time"><small><a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
+                html += data.memories[i].text+'<div class="memory-time"><small>';
+              }
+              if(data.memories[i].tweetId){
+                html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else{
+                html+='<a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
               }
               resultsList.innerHTML += html
             }

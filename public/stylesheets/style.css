@@ -77,6 +77,21 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 #home-hero .pure-u-1-3{
   height: 100%;
 }
+.remover:hover:before{
+  content: "\f067";
+  font-size: 1.2em;
+  transition-delay: 2s;
+  -webkit-transition-delay: 2s; /* Safari */
+  color: rgb(194,89,117);
+}
+.icon-rotate-45:before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
 /*Nav bar*/
 #menu-bar{
   background-color: inherit;
@@ -137,10 +152,12 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   border-bottom-left-radius: 0px;
   width: auto;
   margin-top: 5px;
+  height: 27px;
 }
 .nav-input #search-text-field {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  height: 27px;
 }
 .alt-btn{
   float: right;

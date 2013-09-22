@@ -13,12 +13,15 @@ var Memory = new Schema({
     accountId: {type: String, required: true},
     image: {type: String, default: ''},
     searchableTime: {type: String},
-    searchableUrl: {type: String}
+    searchableUrl: {type: String},
+    tweetId:{type: String},
+    tweetType: {type: String},
+    keywordBin: {type: String}
 });
 
 Memory.plugin(troop.timestamp);
 Memory.plugin(troop.keywords, {
-  source: ['text', 'searchableTime', 'searchableUrl'],
+  source: ['text', 'searchableTime', 'searchableUrl', 'keywordBin'],
   naturalize: true
 })
 Memory.statics.createMemory = function(data, io){

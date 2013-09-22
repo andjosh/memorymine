@@ -31,7 +31,8 @@ block content
             if !user.twitterToken
               a.btn(href="/auth/twitter") Connect
             else
-              a.btn.disabled Connected
+              a.btn(href="/auth/twitter")
+                i.icon-refresh
             br
             br
           .pure-control-group
@@ -40,7 +41,8 @@ block content
             if !user.facebookToken
               a.btn(href="/auth/facebook") Connect
             else
-              button.disabled Connected
+              a.btn(href="/auth/facebook")
+                i.icon-refresh
             br
             br
           .pure-control-group

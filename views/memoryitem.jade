@@ -3,9 +3,17 @@ if memory.link
     a(href="#{memory.link}", target="_blank") #{memory.text}
     .memory-time
       small
-        a(href="/memory/#{memory._id}") #{memory.modified}
+        if memory.tweetId
+          a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
+            i.icon-twitter.icon-large
+        else
+          a(href="/memory/#{memory._id}") #{memory.modified}
 else
   li #{memory.text}
     .memory-time
       small
-        a(href="/memory/#{memory._id}") #{memory.modified}
+        if memory.tweetId
+          a(href="http://twitter.com/statuses/#{memory.tweetId}", target="_blank")
+            i.icon-twitter.icon-large
+        else
+          a(href="/memory/#{memory._id}") #{memory.modified}
