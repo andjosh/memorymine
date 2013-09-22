@@ -131,10 +131,6 @@ module.exports = function (app, ensureAuthenticated) {
   });
   app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['user_status', 'user_checkins', 'read_stream'] }));
   app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/account' }), function(req, res) {
-    // fb.setAccessToken(req.user.facebookToken);
-    // fb.api(req.user.facebookUid, { fields: ['id', 'posts', 'photos'] }, function(resp) {
-    //   console.log(resp);
-    // });
     req.flash('message', 'Connected to Facebook!');
     res.redirect('/account');
   });
