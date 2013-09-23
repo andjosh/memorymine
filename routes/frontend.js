@@ -32,14 +32,13 @@ module.exports = function (app, ensureAuthenticated) {
       req.flash('error', 'Password and password confirmation must match.')
       res.redirect('/register');
     }
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
+    Account.register(new Account({ username: req.body.username }), req.body.password, function(err, account) {
         if (err) {
             req.flash('error', 'That username is already in use.')
             return res.redirect('/register');
         }
-        var name = req.body.username.match(/^[^@]*/)
         passport.authenticate('local')(req, res, function () {
-          req.flash('message', 'Great, '+name+'!')
+          req.flash('message', 'Welcome, '+req.body.username+'!')
           res.redirect('/');
         })
     });
@@ -47,7 +46,7 @@ module.exports = function (app, ensureAuthenticated) {
   app.get('/sign-in', function(req, res) {
     res.render('signin', { title: 'Sign In', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
-  app.post('/sign-in', passport.authenticate('local', { failureRedirect: '/', failureFlash: 'Invalid username or password.' }), function(req, res) {
+  app.post('/sign-in', passport.authenticate('local', { failureRedirect: '/', failureFlash: 'Invalid email or password.' }), function(req, res) {
     res.redirect('/');
   });
   app.get('/sign-out', function(req, res) {
@@ -61,6 +60,9 @@ module.exports = function (app, ensureAuthenticated) {
   app.post('/account', ensureAuthenticated, function(req, res) {
     if (req.body.password != req.body.password_conf) {
       req.flash('error', 'New password and password confirmation must match.')
+      res.redirect('/account');
+    } else if(!req.body.username || !req.body.email){
+      req.flash('error', 'Please supply username and email.')
       res.redirect('/account');
     } else {
       Account.findById(req.user._id, function(err,account){

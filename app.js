@@ -34,7 +34,7 @@ io.configure(function () {
 // Define what/which mongo to yell at
 var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
-                || 'mongodb://localhost/memorymine';
+                || config.mongo.url;
 
 app.configure(function(){
     app.set('views', __dirname + '/views');
@@ -133,7 +133,7 @@ app.configure('development', function(){
 Account.find().lean().exec(function(err,results){
   if(err){console.log(err)}
   if(!results || results.length === 0){
-    Account.register(new Account({ username : 'admin' }), 'password', function(err, account) {
+    Account.register(new Account({ email:'admin@domain.com', username : 'admin' }), 'password', function(err, account) {
       if (err) {console.log(err)}
       if(account){console.log('Successfully created "admin" account.')}
     });

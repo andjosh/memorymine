@@ -12,6 +12,9 @@ block content
             label(for="username") Name
             input(type="text", name="username", placeholder="Name", value="#{user.username}")
           .pure-control-group
+            label(for="email") Email
+            input(type="email", name="email", placeholder="email@domain.com", value="#{user.email ? user.email : ''}")
+          .pure-control-group
             label(for="password") Password
             input(type="password", name="password", placeholder="Password")
           .pure-control-group
@@ -22,33 +25,37 @@ block content
       br
       br
       form.pure-form.pure-form-aligned
-        legend(id="legend-connect")
-          a(onclick="revealConnect();", href="#connect") Connect
-        fieldset(id="fieldset-connect").no-display
+        legend(id="legend-connect") Connect
+          // a(onclick="revealConnect();", href="#connect") Connect
+        fieldset(id="fieldset-connect")
           .pure-control-group
             label
-              i.icon-twitter
+              i.icon-twitter.icon-large
             if !user.twitterToken
-              a.btn(href="/auth/twitter") Connect
-            else
               a.btn(href="/auth/twitter")
-                i.icon-refresh
+                i.icon-plus
+            else
+              a.btn.btn-danger(href="https://twitter.com/settings/applications", target="_blank")
+                i.icon-remove
             br
             br
           .pure-control-group
             label
-              i.icon-facebook
+              i.icon-facebook.icon-large
             if !user.facebookToken
-              a.btn(href="/auth/facebook") Connect
-            else
               a.btn(href="/auth/facebook")
-                i.icon-refresh
+                i.icon-plus
+            else
+              a.btn.btn-danger(href="https://www.facebook.com/settings?tab=applications", target="_blank")
+                i.icon-remove
             br
             br
           .pure-control-group
             label
               | Tent
-            a.btn Connect
+            small.muted (Coming soon!)
+            // a.btn
+            //   i.icon-plus
             br
             br
           .pure-control-group

@@ -57,6 +57,12 @@ input[type="button"]:hover, .btn:hover, button:hover, #memory-form #send:hover{
   background-color: rgba(127,202,97,0.5);
   border: none;
 }
+.btn-danger{
+  background-color: rgba(194,89,117,0.75);
+}
+.btn-danger:hover{
+  background-color: rgba(194,89,117,0.5);
+}
 input:focus, textarea:focus{
   border:1px solid #ccc !important;
   box-shadow: 0 0 3px rgba(127,202,97,0.8) inset !important;
@@ -69,6 +75,21 @@ input[type="text"]{
   background-color: white;
 }
 code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
+.delay1{
+  animation-delay: 1s;
+-moz-animation-delay: 1s;
+-webkit-animation-delay: 1s;
+}
+.delay2{
+  animation-delay: 2s;
+-moz-animation-delay: 2s;
+-webkit-animation-delay: 2s;
+}
+.delay4{
+  animation-delay: 4s;
+-moz-animation-delay: 4s;
+-webkit-animation-delay: 4s;
+}
 #home-hero{
   margin: -4em 0 0 0;
   height: 250px;

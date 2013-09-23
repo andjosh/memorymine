@@ -15,11 +15,11 @@
         fieldset
           .pure-control-group
             label(for="username") Name
-            input(type="text", name="username", placeholder="Name", autofocus="autofocus")
+            input(type="text", name="username", placeholder="username", autofocus="autofocus")
           .pure-control-group
             label(for="password") Password
             input.password-field(type="password", name="password", placeholder="Password")
-            a.password-toggle(onclick="togglePasswordFields(this);")
+            a.password-toggle(onclick="togglePasswordFields(this);", title="Toggle viewable password")
               i.icon-eye-open
           #password-confirm.pure-control-group
             label(for="password") Confirm Password

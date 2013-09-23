@@ -8,5 +8,8 @@
     "clientID":"409533869146692",
     "clientSecret":"aef348aa9d70b32e7d76d7b2ac5450bc",
     "callbackURL":"http://localhost:5000/auth/facebook/callback"
+  },
+  "mongo":{
+    "url":"mongodb://localhost/memorymine"
   }
 }

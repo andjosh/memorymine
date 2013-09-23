@@ -13,7 +13,7 @@ module.exports = function(grunt) {
   // Define what/which mongo to yell at
   var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
-                || 'mongodb://localhost/memorymine';
+                || config.mongo.url;
 
   // Project configuration.
   grunt.initConfig({

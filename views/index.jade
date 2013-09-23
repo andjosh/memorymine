@@ -10,10 +10,17 @@ block content
       .pure-u-1-3.wide-half
         include searchform
         #results-list
+          if(memories.length == 0)
+            | <div class="clear-search delay4 animated fadeInDown"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>
+            li.animated.fadeInDown.delay4 You can search for memories past and present using this finder. Just type keywords and submit.
       .pure-u-1-3.pull-center.wide-half
         #form-error
         include memoryForm
         ul(id="memory-list")
+          if(memories.length == 0)
+            li.animated.fadeInDown <p class="lead">Welcome!</p>You can begin remembering more simply by typing your thoughts into the text box above and clicking submit.
+            li.animated.fadeInLeft.delay1 Feel free to add links to your memories, which you can access later by clicking on the text of the memory.
+            li.animated.fadeInRight.delay2 If, at any time, you need a helping hand, just type <code>help</code> into the text box and submit.
           for memory in memories
             include memoryitem
       .pure-u-1-6.wide-only
@@ -33,16 +40,16 @@ block content
             errorBox = document.getElementById('form-error'),
             searchButton = document.getElementById('search-submit-field'),
             searchField = document.getElementById('search-text-field');
-        socket.on('error', function (data) {
-          if(data) {
-            var html = '';
-            html += '<li style="color:red;"><b>Error: </b>';
-            html += data.details + '</li>';
-            memoryList.innerHTML = html.concat(memoryList.innerHTML);
-          } else {
-            console.log("There is a problem: ", data);
-          }
-        });
+        // socket.on('error', function (data) {
+        //   if(data) {
+        //     var html = '';
+        //     html += '<li style="color:red;"><b>Error: </b>';
+        //     html += data.details + '</li>';
+        //     memoryList.innerHTML = html.concat(memoryList.innerHTML);
+        //   } else {
+        //     console.log("There is a problem: ", data);
+        //   }
+        // });
         socket.on('newMemory', function (data) {
           if(data.text && (data.accountId == accountId.content)) {
             var html = '<li class="animated fadeInDown">';
@@ -59,7 +66,7 @@ block content
         });
         socket.on('searchResult', function (data) {
           if(data.accountId == accountId.content){
-            resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);"><i class="icon-remove-sign"></i></a></div>';
+            resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>';
             for(i=0;i<data.memories.length;i++){
               var html = '<li class="animated fadeInDown">';
               if(data.memories[i].link){
@@ -79,6 +86,7 @@ block content
             if(data.memories.length == 0){
               resultsList.innerHTML += '<p class="muted text-center">No memory of that keyword.</p>';
             }
+            searchButton.children[0].className = 'icon-search';
             var hiliteTimeout = window.setTimeout(hiliteResults,1000,data.searchText);
           } else {
             console.log("There is a problem: ", data);
@@ -90,6 +98,8 @@ block content
             errorBox.innerHTML = '<p class="error">You should type something to remember!</p>';
             textField.value = null;
             var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
+          } else if((textField.value == "help") || (textField.value == "Help")){
+            triggerHelpModal();
           } else {
             var possibleHtml = textField.value;
             var div = document.createElement("div");
@@ -107,6 +117,7 @@ block content
             var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
           } else {
             socket.emit('sendSearch', { query: searchField.value, accountId: accountId.content, });
+            searchButton.children[0].className += ' icon-spin';
           }
         };
         function dismissError(div){
@@ -119,6 +130,13 @@ block content
         }
         function cleanMemory(element){
           element.className = null;
+        }
+        function triggerHelpModal(){
+          resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft">Add memories by typing into the text box, maybe pasting a link into the <i class="icon-link"></i> field, and clicking \'Submit!\'.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft">Feel free to add links to your memories, which you can access later by clicking on the text of the memory.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft delay1">You can edit present and past memories by clicking on each memory\'s date.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft delay2">You can edit your account info, as well as connect your Twitter and Facebook accounts by clicking on the <a href="/account"><i class="icon-cog icon-spin"></i> Settings</a> tab above.</li>';
         }
         function checkText(evt){
           if (evt.keyCode == 13) {
