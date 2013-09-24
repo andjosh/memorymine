@@ -61,6 +61,9 @@ module.exports = function (app, ensureAuthenticated) {
     if (req.body.password != req.body.password_conf) {
       req.flash('error', 'New password and password confirmation must match.')
       res.redirect('/account');
+    } else if (!req.body.password){
+      req.flash('error', 'Please supply your password.')
+      res.redirect('/account');
     } else if(!req.body.username || !req.body.email){
       req.flash('error', 'Please supply username and email.')
       res.redirect('/account');
