@@ -3,7 +3,7 @@ html
   head
     title= title
     meta(name="viewport", content="width=device-width")
-    link(rel='icon', href="/images/favicon.png")
+    // link(rel='icon', href="/images/favicon.png")
     link(rel='stylesheet', href='/stylesheets/style.css')
     if user
       meta(name="uid", content="#{user._id}")
@@ -22,7 +22,7 @@ html
             ul.otherly
               if user
                 li
-                  a.brand-nav(href="/") <span class="memory">Memory</span>Mine
+                  a.brand-nav(href="/") <span class="memory">Atomist</span>
                 li
                   a.account-nav(href="/account")
                     i.icon-cog
@@ -31,7 +31,7 @@ html
                     i.icon-signout
               if (!user)
                 li
-                  a.brand-nav-inverse(href="/") <span class="memory">Memory</span>Mine
+                  a.brand-nav-inverse(href="/") <span class="memory">Atomist</span>
 
       block content
 
