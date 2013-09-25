@@ -10,12 +10,14 @@ module.exports = function(grunt) {
     , twHandler = require('./lib/twitterHandler')
     , fbHandler = require('./lib/facebookHandler')
     , fs = require('fs')
-    , config = JSON.parse(fs.readFileSync('./config.json'));
+    , config = JSON.parse(fs.readFileSync('./config.json'))
+    , MailComposer = require("mailcomposer").MailComposer;
   // Define what/which mongo to yell at
   var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
                 || config.mongo.url;
-  var mg = new Mailgun(config.mailgun.key);
+  var mg = new Mailgun(config.mailgun.key),
+      mailcomposer = new MailComposer();
 
   // Project configuration.
   grunt.initConfig({
@@ -86,15 +88,27 @@ module.exports = function(grunt) {
       (function loop() {
         if(i<last){
           if(accounts[i].email){
-            mg.sendText('info@atomist.co', [accounts[i].email],
-              'Atomist Update',
-              '- Love Atomist.co',
-              'atomist.mailgun.org', {},
-              function(err) {
-                if (err) {console.log('Oh noes: ' + err);}
-                else     {console.log('Successful email');}
-              }
-            );
+            Memory.find({ accountId: accounts[i]._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
+              var body = 'Hello '+accounts[i].username+'! Here is your previous 24 hours: ';
+              mailcomposer.setMessageOption({
+                from: 'info@atomist.co',
+                to: accounts[i].email,
+                subject: 'Daily Atomist',
+                body: "Hello world!",
+                html: "<b>Hello world!</b>"
+              }); 
+              mailcomposer.buildMessage(function(err, messageSource){
+                mg.sendRaw('info@atomist.co', 
+                  accounts[i].email,
+                  messageSource,
+                  'atomist.mailgun.org',
+                  function(err) {
+                    if (err) {console.log('Oh noes: ' + err);}
+                    else     {console.log('Successful email');}
+                  }
+                );
+              });
+            });
           }
         }else{done();}
       })();

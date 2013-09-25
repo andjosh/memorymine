@@ -15,6 +15,12 @@ block content
             label(for="email") Email
             input(type="email", name="email", placeholder="email@domain.com", value="#{user.email ? user.email : ''}")
           .pure-control-group
+            label(for="emailActive") Receive Daily Email
+            if user.emailActive
+              input(type="checkbox", name="emailActive", checked)
+            else
+              input(type="checkbox", name="emailActive")
+          .pure-control-group
             label(for="password") Password
             input(type="password", name="password", placeholder="Password")
           .pure-control-group

@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
 
 var Account = new Schema({
   username: {type: String, default: ''},
-  email: {type: String},
+  email: {type: String, required: true},
+  emailActive: {type: Boolean, default: true},
   image: {type: String, default: ''},
   admin: { type: Boolean, default: false },
   fullAccess: { type: Boolean, default: false },
@@ -23,7 +24,7 @@ var Account = new Schema({
   accessToken: String
 });
 
-Account.plugin(passportLocalMongoose, {usernameField: 'username'});
+Account.plugin(passportLocalMongoose, {usernameField: 'email'});
 Account.plugin(troop.timestamp);
 
 Account.statics.generateRandomToken = function () {

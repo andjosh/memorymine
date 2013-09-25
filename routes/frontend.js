@@ -30,15 +30,15 @@ module.exports = function (app, ensureAuthenticated) {
   app.post('/register', function(req, res) {
     if (req.body.password != req.body.password_conf) {
       req.flash('error', 'Password and password confirmation must match.')
-      res.redirect('/register');
+      res.redirect('/');
     }
-    Account.register(new Account({ username: req.body.username }), req.body.password, function(err, account) {
+    Account.register(new Account({ email : req.body.email, username: req.body.email.match(/^[^@]*/) }), req.body.password, function(err, account) {
         if (err) {
-            req.flash('error', 'That username is already in use.')
-            return res.redirect('/register');
+            req.flash('error', 'That email is already in use.')
+            return res.redirect('/');
         }
         passport.authenticate('local')(req, res, function () {
-          req.flash('message', 'Welcome, '+req.body.username+'!')
+          req.flash('message', 'Welcome, '+account.username+'!')
           res.redirect('/');
         })
     });
@@ -76,10 +76,9 @@ module.exports = function (app, ensureAuthenticated) {
             res.redirect('/account');
             throw err;
           }
-          if(req.body.username !== req.user.username){
-            resetAccount.username = req.body.username;
-          }
+          resetAccount.username = req.body.username;
           resetAccount.email = req.body.email;
+          if(req.body.emailActive){resetAccount.emailActive = true;}else{resetAccount.emailActive = false;};
           resetAccount.save(function(err, saved){
             if(err) {
               req.flash('error', 'There was a problem in saving that information: '+err)

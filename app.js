@@ -59,7 +59,7 @@ app.configure('production', function(){
     app.use(express.errorHandler());
 });
 
-passport.use(new LocalStrategy(Account.authenticate()));
+passport.use(Account.createStrategy());
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 passport.use(

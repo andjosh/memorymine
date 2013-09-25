@@ -100,7 +100,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   margin-top: 4em;
 }
 #home-hero a{
-  position:relative;z-index:100;font-size:3em;
+  position:relative;z-index:100;font-size:4em;
 }
 .remover:hover:before{
   content: "\f067";
@@ -328,7 +328,7 @@ legend{
     list-style: none;
     border-radius: 50%;
     margin-top: 0.5em;
-    margin-bottom: -0.7em;
+    margin-bottom: -1em;
 }
 #spinner li {
     width: .175em;
