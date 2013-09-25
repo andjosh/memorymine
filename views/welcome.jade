@@ -61,3 +61,7 @@ script
       document.getElementsByClassName('alt-btn')[0].innerHTML = 'Sign In';
     }
   };
+  window.onload = function(){
+    document.getElementById('home-hero').style.height = window.innerHeight+30+'px';
+    document.getElementById('spinner').style.margin = window.innerHeight/2.5+'px auto -85px auto';
+  }
