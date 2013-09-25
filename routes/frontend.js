@@ -79,6 +79,7 @@ module.exports = function (app, ensureAuthenticated) {
           if(req.body.username !== req.user.username){
             resetAccount.username = req.body.username;
           }
+          resetAccount.email = req.body.email;
           resetAccount.save(function(err, saved){
             if(err) {
               req.flash('error', 'There was a problem in saving that information: '+err)
