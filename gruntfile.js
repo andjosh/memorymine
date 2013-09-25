@@ -6,6 +6,7 @@ module.exports = function(grunt) {
     , moment = require('moment')
     , twitter = require('twitter')
     , fb = require('fb')
+    , Mailgun = require('mailgun').Mailgun
     , twHandler = require('./lib/twitterHandler')
     , fbHandler = require('./lib/facebookHandler')
     , fs = require('fs')
@@ -14,6 +15,7 @@ module.exports = function(grunt) {
   var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
                 || config.mongo.url;
+  var mg = new Mailgun(config.mailgun.key);
 
   // Project configuration.
   grunt.initConfig({
@@ -70,6 +72,30 @@ module.exports = function(grunt) {
               });
             });
           }else{console.log('token absent for '+accounts[i].email);i++;loop();}
+        }else{done();}
+      })();
+    })
+  });
+  grunt.registerTask('pushEmails', 'Push emails to all the users', function() {
+    // Invoke async mode
+    var done = this.async();
+    // Connect mongoose
+    mongoose.connect(mongoUri);
+    Account.find().lean().exec(function(err,accounts){
+      var i=0;last=accounts.length;
+      (function loop() {
+        if(i<last){
+          if(accounts[i].email){
+            mg.sendText('info@atomist.co', [accounts[i].email],
+              'Atomist Update',
+              '- Love Atomist.co',
+              'atomist.mailgun.org', {},
+              function(err) {
+                if (err) {console.log('Oh noes: ' + err);}
+                else     {console.log('Successful email');}
+              }
+            );
+          }
         }else{done();}
       })();
     })

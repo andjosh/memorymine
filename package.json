@@ -26,6 +26,7 @@
     "passport-twitter": "~1.0.2",
     "passport-facebook": "~1.0.1",
     "twitter": "~0.2.2",
-    "fb": "~0.6.2"
+    "fb": "~0.6.2",
+    "mailgun": "~0.4.2"
   }
 }

@@ -11,5 +11,8 @@
   },
   "mongo":{
     "url":"mongodb://localhost/memorymine"
+  },
+  "mailgun":{
+    "key":"key-5n1bqp873lh8yritf-uiogsvgn120fa4"
   }
 }
