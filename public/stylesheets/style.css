@@ -116,9 +116,6 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 #atomist-diagram .rf-atomist{
   font-size: 3em;
 }
-#atomist-diagram .icon-edit{
-  margin-top: 10px;
-}
 .remover:hover:before{
   content: "\f067";
   font-size: 1.2em;
