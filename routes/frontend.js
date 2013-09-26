@@ -38,6 +38,7 @@ module.exports = function (app, ensureAuthenticated) {
             return res.redirect('/');
         }
         passport.authenticate('local')(req, res, function () {
+          account.welcomeEmail();
           req.flash('message', 'Welcome, '+account.username+'!')
           res.redirect('/');
         })
