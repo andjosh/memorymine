@@ -87,29 +87,41 @@ module.exports = function(grunt) {
       var i=0;last=accounts.length;
       (function loop() {
         if(i<last){
-          if(accounts[i].email){
+          if(accounts[i].emailActive){
             Memory.find({ accountId: accounts[i]._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
-              var body = 'Hello '+accounts[i].username+'! Here is your previous 24 hours: ';
+              var plainBody = 'Hello '+accounts[i].username+'! Here are your previous 24 hours, atomized: ',
+                  htmlBody = '<h3>Hello '+accounts[i].username+'!</h3><p>Here are your previous 24 hours, atomized:</p><ul>';
+              for(j=0;j<memories.length;j++){
+                if(memories[j].link){
+                  plainBody += memories[j].text+": "+memories[j].link;
+                  htmlBody  += "<li><a href='"+memories[j].link+"'>"+memories[j].text+"</a></li>";
+                }else{
+                  plainBody += memories[j].text;
+                  htmlBody  += "<li>"+memories[j].text+"</li>";
+                }
+              }
+              plainBody += '- Atomist.co';
+              htmlBody  += '</ul><p>- Your friends at <a href="http://atomist.co"><img src="http://atomist.co/images/favicon.png" width="20" height="20" alt="Atomist" style="vertical-align:middle;"/> Atomist.co</a></p>';
               mailcomposer.setMessageOption({
-                from: 'info@atomist.co',
+                from: 'daily@atomist.co',
                 to: accounts[i].email,
-                subject: 'Daily Atomist',
-                body: "Hello world!",
-                html: "<b>Hello world!</b>"
+                subject: 'Daily Atomist, '+moment().format("MMM Do 'YY"),
+                body: plainBody,
+                html: htmlBody
               }); 
               mailcomposer.buildMessage(function(err, messageSource){
-                mg.sendRaw('info@atomist.co', 
+                mg.sendRaw('daily@atomist.co', 
                   accounts[i].email,
                   messageSource,
                   'atomist.mailgun.org',
                   function(err) {
-                    if (err) {console.log('Oh noes: ' + err);}
-                    else     {console.log('Successful email');}
+                    if (err) {console.log('Oh noes: ' + err);i++;loop();}
+                    else     {console.log('Successful email to '+accounts[i].email);i++;loop();}
                   }
                 );
               });
             });
-          }
+          }else{i++;loop();}
         }else{done();}
       })();
     })
