@@ -102,6 +102,23 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 #home-hero a{
   position:relative;z-index:100;font-size:4em;
 }
+#explanation{
+  margin: 40px 0 40px 0;
+}
+#explanation p{
+  margin: 30px 10px;
+}
+#atomist-diagram i{
+  font-size: 2em;
+  margin: 0 10px;
+  padding: 0 10px;
+}
+#atomist-diagram .rf-atomist{
+  font-size: 3em;
+}
+#atomist-diagram .icon-edit{
+  margin-top: 10px;
+}
 .remover:hover:before{
   content: "\f067";
   font-size: 1.2em;
@@ -115,6 +132,14 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   -ms-transform: rotate(45deg);
   -o-transform: rotate(45deg);
   transform: rotate(45deg);
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+}
+.icon-rotate-315:before {
+  -webkit-transform: rotate(315deg);
+  -moz-transform: rotate(315deg);
+  -ms-transform: rotate(315deg);
+  -o-transform: rotate(315deg);
+  transform: rotate(315deg);
   filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
 }
 /*Nav bar*/
@@ -328,7 +353,7 @@ legend{
     list-style: none;
     border-radius: 50%;
     margin-top: 0.5em;
-    margin-bottom: -1em;
+    margin-bottom: -0.75em;
 }
 #spinner li {
     width: .175em;
