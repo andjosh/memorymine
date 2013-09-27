@@ -58,6 +58,18 @@ block content
             br
           .pure-control-group
             label
+              i.icon-github.icon-large
+            if !user.github
+              input#github-name(type="text", name="githubName", placeholder="Username", value="#{user.github || ''}")
+              a.btn(onclick="submitGithub(this);")
+                i.icon-plus
+            else
+              a.btn.btn-danger(onclick="submitGithub(this,true);")
+                i.icon-remove
+            br
+            br
+          .pure-control-group
+            label
               | Tent
             small.muted (Coming soon!)
             // a.btn
@@ -67,9 +79,18 @@ block content
           .pure-control-group
             label
               i.icon-key
-            code #{user.key}
+            // code #{user.key}
+            small.muted (API coming soon!)
   script
     function revealConnect(){
       document.getElementById('legend-connect').innerHTML = 'Connect To';
       document.getElementById('fieldset-connect').className = 'animated fadeInDown';
+    }
+    function submitGithub(btn,keep){
+      if(!keep){
+        var value = document.getElementById('github-name').value;
+        location = '?githubName='+value;
+      }else{
+        location = '?githubRemove=true';
+      }
     }

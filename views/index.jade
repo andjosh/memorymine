@@ -23,6 +23,8 @@ block content
             li.animated.fadeInRight.delay2 If, at any time, you need a helping hand, just type <code>help</code> into the text box and submit.
           for memory in memories
             include memoryitem
+          if(memories.length > 0)
+            li.text-center.muted 24 hours ago
       .pure-u-1-6.wide-only
 
     script
@@ -168,7 +170,9 @@ block content
         function hiliter(word, element) {
           var rgxp = new RegExp(word, 'i');
           var repl = '<span class="hiliter">' + word + '</span>';
-          element.innerHTML = element.innerHTML.replace(rgxp, repl);
+          if(element.children.length > 1){
+            element.children[0].innerHTML = element.children[0].innerHTML.replace(rgxp, repl);
+          }else{element.innerHTML= element.innerHTML.replace(rgxp, repl);}
         };
       };
       function clearSearch(element){
@@ -181,4 +185,8 @@ block content
         input.focus();
       };
       function clearSearchInner(element){element.innerHTML = null;};
+      function awake(){
+        location.reload();
+      };
     include truncate
+    include wake

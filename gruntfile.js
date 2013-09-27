@@ -11,7 +11,8 @@ module.exports = function(grunt) {
     , fbHandler = require('./lib/facebookHandler')
     , fs = require('fs')
     , config = JSON.parse(fs.readFileSync('./config.json'))
-    , MailComposer = require("mailcomposer").MailComposer;
+    , MailComposer = require("mailcomposer").MailComposer
+    , getJSON = require('./lib/getJSON').getJSON;
   // Define what/which mongo to yell at
   var mongoUri = process.env.MONGOLAB_URI
                 || process.env.MONGOHQ_URL
@@ -74,6 +75,30 @@ module.exports = function(grunt) {
               });
             });
           }else{console.log('token absent for '+accounts[i].email);i++;loop();}
+        }else{done();}
+      })();
+    })
+  });
+  grunt.registerTask('pullGithub', 'Pull gists and stars for all the users', function() {
+    // Invoke async mode
+    var done = this.async();
+    // Connect mongoose
+    mongoose.connect(mongoUri);
+    Account.find().lean().exec(function(err,accounts){
+      var i=0;last=accounts.length;
+      (function loop() {
+        if(i<last){
+          if(accounts[i].github){
+            var urlOptions = {
+              host: 'api.github.com',
+              path: '/users/'+accounts[i].github+'/starred?per_page=500',
+              port: 443,
+              method: 'GET'
+            };
+            getJSON(urlOptions, function(status,resp){
+              console.log(resp[0].name);
+            })
+          }else{console.log('Github absent for '+accounts[i].email);i++;loop();}
         }else{done();}
       })();
     })

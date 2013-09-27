@@ -27,7 +27,8 @@ var Account = new Schema({
   facebookToken: {type: String},
   facebookTokenRefresh: {type: String},
   facebookUid: {type: String},
-  accessToken: String
+  accessToken: String,
+  github: String
 });
 
 Account.plugin(passportLocalMongoose, {usernameField: 'email'});

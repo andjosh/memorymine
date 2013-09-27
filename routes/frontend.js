@@ -56,7 +56,35 @@ module.exports = function (app, ensureAuthenticated) {
     res.redirect('/');
   });
   app.get('/account', ensureAuthenticated, function(req, res) {
-    res.render('account', { title: 'Your account', user: req.user, message: req.flash('message'), error: req.flash('error') });
+    if(req.query.githubName){
+      Account.findById(req.user._id, function(err,account){
+        account.github = req.query.githubName;
+        account.save(function(err, saved){
+          if(err) {
+            req.flash('error', 'There was a problem in saving that information: '+err)
+            res.redirect('/account');
+            throw err;
+          }
+          req.flash('message', 'Updates were successful to Github account!');
+          res.redirect('/account');
+        })
+      })
+    }else if(req.query.githubRemove){
+      Account.findById(req.user._id, function(err,account){
+        account.github = null;
+        account.save(function(err, saved){
+          if(err) {
+            req.flash('error', 'There was a problem in saving that information: '+err)
+            res.redirect('/account');
+            throw err;
+          }
+          req.flash('message', 'Successfully removed Github account!');
+          res.redirect('/account');
+        })
+      })
+    }else{
+      res.render('account', { title: 'Your account', user: req.user, message: req.flash('message'), error: req.flash('error') });
+    }
   });
   app.post('/account', ensureAuthenticated, function(req, res) {
     if (req.body.password != req.body.password_conf) {
