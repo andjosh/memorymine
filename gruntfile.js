@@ -9,6 +9,7 @@ module.exports = function(grunt) {
     , Mailgun = require('mailgun').Mailgun
     , twHandler = require('./lib/twitterHandler')
     , fbHandler = require('./lib/facebookHandler')
+    , handleGithub = require('./lib/handleGithub')
     , fs = require('fs')
     , config = JSON.parse(fs.readFileSync('./config.json'))
     , MailComposer = require("mailcomposer").MailComposer
@@ -89,14 +90,26 @@ module.exports = function(grunt) {
       (function loop() {
         if(i<last){
           if(accounts[i].github){
-            var urlOptions = {
+            var starOptions = {
               host: 'api.github.com',
               path: '/users/'+accounts[i].github+'/starred?per_page=500',
               port: 443,
               method: 'GET'
-            };
-            getJSON(urlOptions, function(status,resp){
-              console.log(resp[0].name);
+            },
+            gistOptions = {
+              host: 'api.github.com',
+              path: '/users/'+accounts[i].github+'/gists?per_page=500',
+              port: 443,
+              method: 'GET'
+            };;
+            getJSON(starOptions, function(status,resp){
+              handleGithub.starredHandler({accountId:accounts[i]._id}, resp, function(){
+                getJSON(gistOptions, function(status,resp){
+                  handleGithub.gistsHandler({accountId:accounts[i]._id}, resp, function(){
+                    i++;loop();
+                  })
+                })
+              })
             })
           }else{console.log('Github absent for '+accounts[i].email);i++;loop();}
         }else{done();}

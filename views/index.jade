@@ -24,7 +24,8 @@ block content
           for memory in memories
             include memoryitem
           if(memories.length > 0)
-            li.text-center.muted 24 hours ago
+            li.text-center.muted
+              small(style="text-transform:uppercase;float:none;") 24 hours ago
       .pure-u-1-6.wide-only
 
     script
@@ -77,9 +78,11 @@ block content
                 html += data.memories[i].text+'<div class="memory-time"><small>';
               }
               if(data.memories[i].tweetId){
-                html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+                html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
               }else if(data.memories[i].facebookId){
-                html+='<a href="http://www.facebook.com/permalink.php?id='+facebookUid.content+'&v=wall&story_fbid='+data.memories[i].facebookId.split('_').pop()+'" target="_blank"><i class="icon-facebook"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+                html+='<a href="http://www.facebook.com/permalink.php?id='+facebookUid.content+'&v=wall&story_fbid='+data.memories[i].facebookId.split('_').pop()+'" target="_blank"><i class="icon-facebook icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else if(data.memories[i].GithubId){
+                html+='<a href="'+data.memories[i].link+'" target="_blank"><i class="icon-github icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
               }else{
                 html+='<a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
               }

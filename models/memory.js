@@ -19,6 +19,7 @@ var Memory = new Schema({
     facebookType: {type: String},
     facebookLink:{type:String},
     facebookId: {type: String},
+    GithubId: {type: String},
     keywordBin: {type: String}
 });
 
