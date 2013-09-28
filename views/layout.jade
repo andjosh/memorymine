@@ -14,9 +14,13 @@ html
       #message
         if message.length > 0
           p.pull-center.message #{message}
+            a(onclick="dismissAlert(this.parentNode.parentNode);", style="float:right;")
+              i.icon-remove.icon-large
       #error
         if error.length > 0
           p.pull-center.error #{error}
+            a(onclick="dismissAlert(this.parentNode.parentNode);", style="float:right;")
+              i.icon-remove.icon-large
       .pure-g-r
         .pure-u-1-2
           #menu-bar.pure-menu.pure-menu-open.pure-menu-horizontal
@@ -51,4 +55,7 @@ html
             element.innerHTML = '<i class="icon-eye-open"></i>';
           }
         }
+      }
+      function dismissAlert(elem){
+        elem.innerHTML = '';
       }
