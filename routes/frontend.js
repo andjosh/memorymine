@@ -24,6 +24,16 @@ module.exports = function (app, ensureAuthenticated) {
       res.render('index', { title: 'Atomist - Search your thoughts', user: req.user, memories: [], message: req.flash('message'), error: req.flash('error') });
     }
   });
+  app.get('/atomistDemo', function(req, res) {
+    Account.findOne({username: 'jsh+atomist'}).lean().exec(function(err,account){
+      Memory.find({ accountId: account._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
+        for(i=0;i<memories.length;i++){
+          memories[i].modified = moment(memories[i].modified).fromNow();
+        }
+        res.render('demo', { title: 'Atomist - Search your thoughts', user: account, memories: memories, message: req.flash('message'), error: req.flash('error') });
+      });
+    })
+  });
   app.get('/register', function(req, res) {
     res.render('register', { title: 'Register', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });

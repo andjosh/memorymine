@@ -1,0 +1,193 @@
+extends layout
+
+block content
+  if !user
+    include welcome
+
+  if user
+    .pure-g-r
+      .pure-u-1-6.wide-only
+      .pure-u-1-3.wide-half
+        include searchform
+        #results-list
+          if(memories.length == 0)
+            | <div class="clear-search delay4 animated fadeInDown"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>
+            li.animated.fadeInDown.delay4 You can search for thoughts past and present using this finder. Just type a keyword or multiple and submit.
+      .pure-u-1-3.pull-center.wide-half
+        #form-error
+        include memoryForm
+        ul(id="memory-list")
+          if(memories.length == 0)
+            li.animated.fadeInDown <p class="lead">Welcome!</p>You can begin remembering more simply by typing your thoughts into the text box above and clicking submit.
+            li.animated.fadeInLeft.delay1 Feel free to add links to your thoughts, which you can access later by clicking on the text of the thought.
+            li.animated.fadeInRight.delay2 If, at any time, you need a helping hand, just type <code>help</code> into the text box and submit.
+          for memory in memories
+            include memoryitem
+          if(memories.length > 0)
+            li.text-center.muted
+              small(style="text-transform:uppercase;float:none;") 24 hours ago
+      .pure-u-1-6.wide-only
+
+    script
+      window.onload = function() {
+        var messages = [],
+            memories = [],
+            socket = io.connect(window.location.hostname),
+            textField = document.getElementById("memory-text"),
+            sendButton = document.getElementById("send"),
+            linkField = document.getElementById("memory-link"),
+            memoryList = document.getElementById("memory-list"),
+            resultsList = document.getElementById("results-list"),
+            accountId = document.getElementsByName("uid")[0],
+            facebookUid = document.getElementsByName("fbid")[0],
+            errorBox = document.getElementById('form-error'),
+            searchButton = document.getElementById('search-submit-field'),
+            searchField = document.getElementById('search-text-field');
+        var createMemory = function (data) {
+          if(data.text && (data.accountId == accountId.content)) {
+            var html = '<li class="animated fadeInDown">';
+            if(data.link){
+              html += '<a href="'+data.link+'" target="_blank">'+escapeHtml(data.text)+'</a><div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
+            } else {
+              html += escapeHtml(data.text)+'<div class="memory-time"><small>'+'just now'+'</small></div></li>';
+            }
+            memoryList.innerHTML = html.concat(memoryList.innerHTML);
+            var cleanNewMemory = window.setTimeout(cleanMemory, 1000, memoryList.children[0]);
+          } else {
+            console.log("There is a problem: ", data);
+          }
+        };
+        socket.on('searchResult', function (data) {
+          if(data.accountId == accountId.content){
+            resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>';
+            for(i=0;i<data.memories.length;i++){
+              var html = '<li class="animated fadeInDown">';
+              if(data.memories[i].link){
+                html += '<a href="'+data.memories[i].link+'" target="_blank">'+escapeHtml(data.memories[i].text)+'</a><div class="memory-time"><small>';
+              } else {
+                html += escapeHtml(data.memories[i].text)+'<div class="memory-time"><small>';
+              }
+              if(data.memories[i].tweetId){
+                html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else if(data.memories[i].facebookId){
+                html+='<a href="http://www.facebook.com/permalink.php?id='+facebookUid.content+'&v=wall&story_fbid='+data.memories[i].facebookId.split('_').pop()+'" target="_blank"><i class="icon-facebook icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else if(data.memories[i].GithubId){
+                html+='<a href="'+data.memories[i].link+'" target="_blank"><i class="icon-github icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
+              }else{
+                html+='<a href="/memory/'+data.memories[i]._id+'">'+data.memories[i].searchableTime+'</a></small></div></li>';
+              }
+              resultsList.innerHTML += html
+            }
+            if(data.memories.length == 0){
+              resultsList.innerHTML += '<p class="muted text-center">No memory of that keyword.</p>';
+              resultsList.innerHTML += '<p class="muted text-center">View results on <a href="https://twitter.com/search?q='+data.searchText+'" target="_blank"><i class="icon-twitter-sign icon-large"></i></a> or <a href="https://www.facebook.com/search.php?q='+data.searchText+'" target="_blank"><i class="icon-facebook-sign icon-large"></i></a></p>';
+            }else{var hiliteTimeout = window.setTimeout(hiliteResults,1000,data.searchText);}
+            searchButton.children[0].className = 'icon-search';
+          } else {
+            console.log("There is a problem: ", data);
+          }
+        });
+        sendButton.onclick = sendMemory = function() {
+          if((textField.value == "") || (textField.value == "\n")) {
+            errorBox.className = '';
+            errorBox.innerHTML = '<p class="error">You should type something to remember!</p>';
+            textField.value = null;
+            var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
+          } else if((textField.value == "help") || (textField.value == "Help")){
+            triggerHelpModal();
+          } else {
+            createMemory({ text: textField.value, link: linkField.value, searchableUrl: createSearchableUrl(linkField.value), accountId: accountId.content, time: (new Date) });
+            textField.value = null, linkField.value = null;
+          }
+        };
+        searchButton.onclick = sendSearch = function() {
+          if((searchField.value == "") || (searchField.value == "\n")) {
+            errorBox.className = '';
+            errorBox.innerHTML = '<p class="error">You should type something to search!</p>';
+            searchField.value = null;
+            var timeoutID = window.setTimeout(dismissError, 1000, errorBox);
+          } else {
+            socket.emit('sendSearch', { query: searchField.value, accountId: accountId.content, });
+            searchButton.children[0].className += ' icon-spin';
+          }
+        };
+        function dismissError(div){
+          div.className = 'animated fadeOutDown';
+          var timeoutDelete = window.setTimeout(deleteError, 1000, div);
+        }
+        function deleteError(div){
+          div.innerHTML = '';
+        }
+        function createSearchableUrl(url){
+          var tmp = document.createElement('a');
+          tmp.href = url;
+          return (tmp.hostname+' '+tmp.pathname);
+        }
+        function cleanMemory(element){
+          element.className = null;
+        }
+        function triggerHelpModal(){
+          resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft">Add thoughts by typing into the text box, maybe pasting a link into the <i class="icon-link"></i> field, and clicking \'Submit!\'.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft">Feel free to add links to your thoughts, which you can access later by clicking on the text of the thought.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft delay1">You can edit present and past thoughts by clicking on each thought\'s date.</li>';
+          resultsList.innerHTML += '<li class="animated fadeInLeft delay2">You can edit your account info, as well as connect your Twitter and Facebook accounts by clicking on the <a href="/account"><i class="icon-cog icon-spin"></i> Settings</a> tab above.</li>';
+        }
+        function checkText(evt){
+          if (evt.keyCode == 13) {
+            sendMemory();
+            textField.focus();
+            evt.preventDefault();
+          }
+        };
+        function checkSearch(evt){
+          if (evt.keyCode == 13) {
+            sendSearch();
+            searchField.select();
+            evt.preventDefault();
+          }
+        };
+        linkField.onkeydown = textField.onkeydown = function(evt) {
+          evt = evt || window.event;
+          checkText(evt);
+        };
+        searchField.onkeydown = searchButton.onkeydown = function(evt) {
+          evt = evt || window.event;
+          checkSearch(evt);
+        };
+        function hiliteResults(word){
+          for(i=1;i<resultsList.childElementCount;i++){
+            hiliter(word, resultsList.children[i]);
+          }
+        }
+        function hiliter(word, element) {
+          var rgxp = new RegExp(word, 'i');
+          var repl = '<span class="hiliter">' + word + '</span>';
+          if(element.children.length > 1){
+            element.children[0].innerHTML = element.children[0].innerHTML.replace(rgxp, repl);
+          }else{element.innerHTML= element.innerHTML.replace(rgxp, repl);}
+        };
+      };
+      function clearSearch(element){
+        for(i=0;i<element.childElementCount;i++){
+          element.children[i].className += ' animated fadeOutDown';
+        }
+        var clearSearchTimeout = window.setTimeout(clearSearchInner, 700, element);
+        var input = document.getElementById('search-text-field');
+        input.value = null;
+        input.focus();
+      };
+      function clearSearchInner(element){element.innerHTML = null;};
+      function awake(){
+        location.reload();
+      };
+      (function makeDemo(){
+        var signUp = document.getElementsByClassName('account-nav')[0],
+            signOut = document.getElementsByClassName('sign-out-nav')[0];
+        signOut.style.display = 'none';
+        signUp.href='/register';
+        signUp.innerHTML = '<i class="icon-plus"></i> Sign up for free!';
+      })();
+    include truncate
+    include escape
+    include wake
