@@ -57,9 +57,9 @@ block content
           if(data.text && (data.accountId == accountId.content)) {
             var html = '<li class="animated fadeInDown">';
             if(data.link){
-              html += '<a href="'+data.link+'" target="_blank">'+data.text+'</a><div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
+              html += '<a href="'+data.link+'" target="_blank">'+escapeHtml(data.text)+'</a><div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             } else {
-              html += data.text+'<div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
+              html += escapeHtml(data.text)+'<div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             }
             memoryList.innerHTML = html.concat(memoryList.innerHTML);
             var cleanNewMemory = window.setTimeout(cleanMemory, 1000, memoryList.children[0]);
@@ -73,9 +73,9 @@ block content
             for(i=0;i<data.memories.length;i++){
               var html = '<li class="animated fadeInDown">';
               if(data.memories[i].link){
-                html += '<a href="'+data.memories[i].link+'" target="_blank">'+data.memories[i].text+'</a><div class="memory-time"><small>';
+                html += '<a href="'+data.memories[i].link+'" target="_blank">'+escapeHtml(data.memories[i].text)+'</a><div class="memory-time"><small>';
               } else {
-                html += data.memories[i].text+'<div class="memory-time"><small>';
+                html += escapeHtml(data.memories[i].text)+'<div class="memory-time"><small>';
               }
               if(data.memories[i].tweetId){
                 html+='<a href="http://twitter.com/statuses/'+data.memories[i].tweetId+'" target="_blank"><i class="icon-twitter icon-large"></i> '+data.memories[i].searchableTime+'</a></small></div></li>';
@@ -106,11 +106,7 @@ block content
           } else if((textField.value == "help") || (textField.value == "Help")){
             triggerHelpModal();
           } else {
-            var possibleHtml = textField.value;
-            var div = document.createElement("div");
-            div.innerHTML = possibleHtml;
-            var cleanText = div.textContent || div.innerText || "";
-            socket.emit('createMemory', { text: cleanText, link: linkField.value, searchableUrl: createSearchableUrl(linkField.value), accountId: accountId.content, time: (new Date) });
+            socket.emit('createMemory', { text: textField.value, link: linkField.value, searchableUrl: createSearchableUrl(linkField.value), accountId: accountId.content, time: (new Date) });
             textField.value = null, linkField.value = null;
           }
         };
@@ -192,4 +188,5 @@ block content
         location.reload();
       };
     include truncate
+    include escape
     include wake

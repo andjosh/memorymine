@@ -18,10 +18,7 @@ block content
         if(textField.value == "") {
           alert("Please type something to remember!");
         } else {
-          var possibleHtml = textField.value;
-          var div = document.createElement("div");
-          div.innerHTML = possibleHtml;
-          textField.value = div.textContent || div.innerText || "";
+          // textField.value = escapeHtml(textField.value);
           hiddenUrl.value = createSearchableUrl(linkField.value);
         }
       };
@@ -41,3 +38,4 @@ block content
         checkText(evt);
       };
     };
+  include escape
