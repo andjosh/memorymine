@@ -193,7 +193,7 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   margin-top: 5px;
   width: 100%;
 }
-.nav-input #search-submit-field{
+.nav-input #search-submit-field, #github-name-submit{
   padding-bottom: 6px;
   border-top-left-radius: 0px;
   border-bottom-left-radius: 0px;
@@ -202,7 +202,10 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
   height: 27px;
   background-color: rgba(81,113,186,0.5);
 }
-.nav-input #search-text-field {
+#github-name-submit{
+  background-color: rgba(127,202,97,0.75);
+}
+.nav-input #search-text-field, #github-name{
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   height: 27px;
