@@ -1,0 +1,73 @@
+extends layout
+
+block content
+    if !user
+        .pure-g-r
+            .pure-u-1-2
+              #menu-bar.pure-menu.pure-menu-open.pure-menu-horizontal(style="margin-top:-2em;")
+                ul.otherly
+                    li
+                      a.brand-nav(href="/") <span class="memory rf-atomist">tomist</span>
+                    li
+                      a.account-nav(href="/account")
+                        i.icon-cog
+                    li
+                      a.sign-out-nav(href="/sign-out")
+                        i.icon-signout
+    .pure-g-r
+      .pure-u-1-6.wide-only
+      .pure-u-1-3.wide-half
+        h1 Privacy Policy
+        hr
+        h2 What information do we collect?
+        p We collect information from you when you register on our site. When ordering or registering on our site, as appropriate, you may be asked to enter your: name, e-mail address, mailing address, phone number or credit card information. You may, however, visit our site anonymously.
+        h2 How is the information used?
+        p Any of the information we collect from you may be used in one of the following ways:
+            ul
+                li To personalize your experience and respond better to your needs
+                li To improve customer service and service you more efficiently
+                li To process transactions
+        p Your information, whether public or private, will not be sold, exchanged, transferred, or given to any other company for any reason whatsoever without your consent, other than for the express purpose of delivering the purchased product or service requested. That includes the government.
+        h2 How is my information secure?
+        p After a transaction, your private information (credit cards, financials, etc.) is not stored on our servers. We store all data in secure databases with reputable, industry-leading vendors trusted across the world.
+        h2 Are cookies being used?
+        p Yes. Cookies are small files that a site or its service provider transfers to your computer’s hard drive through your Web browser (if you allow it) that enable the site’s or service provider’s systems to recognize your browser and capture and remember certain information. We use cookies to keep you logged in. You can opt out of this if you would like.
+        h2 Your consent
+        p By using our site, you consent to our web site privacy policy.
+        h2 Contacting us 
+        p Contacting us is easy and does not require an account: <a href="/contact">Contact form</a>.
+      .pure-u-1-3.pull-center.wide-half
+        br
+        br
+        
+        
+      .pure-u-1-6.wide-only
+      .pure-u-1
+        br
+        br
+        br
+        br
+        br
+        br
+      .pure-u-1-4
+        address 
+          a(href="/contact") Contact
+          br
+          a(href="/privacy") Privacy Policy
+          br
+          br
+      .pure-u-1-2
+      .pure-u-1-4
+        address
+          small &copy 2013 Atomist.co
+          br
+          small Made with love & honesty.
+    if !user
+        script
+          (function makeDemo(){
+            var signUp = document.getElementsByClassName('account-nav')[0],
+                signOut = document.getElementsByClassName('sign-out-nav')[0];
+            signOut.style.display = 'none';
+            signUp.href='/register';
+            signUp.innerHTML = '<i class="icon-plus"></i> Sign up for free!';
+          })();

@@ -9,7 +9,9 @@ var passport = require('passport')
     , fb = require('fb')
     , twHandler = require('../lib/twitterHandler')
     , fs = require('fs')
-    , config = JSON.parse(fs.readFileSync('./config.json'));
+    , config = JSON.parse(fs.readFileSync('./config.json'))
+    , Mailgun = require('mailgun').Mailgun
+    , mg = new Mailgun(config.mailgun.key);
 
 module.exports = function (app, ensureAuthenticated) {
   app.get('/', function(req, res) {
@@ -33,6 +35,24 @@ module.exports = function (app, ensureAuthenticated) {
         res.render('demo', { title: 'Atomist - Search your thoughts', user: account, memories: memories, message: req.flash('message'), error: req.flash('error') });
       });
     })
+  });
+  app.get('/contact', function(req, res) {
+    res.render('contact', { title: 'Contact', user: req.user, message: req.flash('message'), error: req.flash('error') });
+  });
+  app.post('/contact', function(req, res) {
+          mg.sendText(req.body.sender, ['jsh+atomist@bckmn.com'],
+                                  'Contact from Atomist.co',
+                                  req.body.words,
+                                  'atomist.mailgun.org', {},
+                                  function(err) {
+                                      if (err) console.log('Oh noes: ' + err);
+                                      else     console.log('Successful Contact email');
+                                  });
+          req.flash('info', 'Your message has been sealed with a kiss and sent!')
+    res.redirect('/');
+  });
+  app.get('/privacy', function(req, res) {
+    res.render('privacy', { title: 'Privacy Policy', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.get('/register', function(req, res) {
     res.render('register', { title: 'Register', user: req.user, message: req.flash('message'), error: req.flash('error') });
