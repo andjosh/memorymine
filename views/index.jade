@@ -24,13 +24,14 @@ block content
           for memory in memories
             include memoryitem
           if(memories.length > 0)
-            li.text-center.muted
-              small(style="text-transform:uppercase;float:none;") 24 hours ago
+            li.text-center
+              small(style="text-transform:uppercase;float:none;")
+                a(href="?days="+dayCount) Go Back One day
       .pure-u-1-6.wide-only
 
     script
       window.onload = function() {
-        var messages = [],
+        var noMemories = #{memories.length == 0},
             memories = [],
             socket = io.connect(window.location.hostname),
             textField = document.getElementById("memory-text"),
@@ -43,16 +44,6 @@ block content
             errorBox = document.getElementById('form-error'),
             searchButton = document.getElementById('search-submit-field'),
             searchField = document.getElementById('search-text-field');
-        // socket.on('error', function (data) {
-        //   if(data) {
-        //     var html = '';
-        //     html += '<li style="color:red;"><b>Error: </b>';
-        //     html += data.details + '</li>';
-        //     memoryList.innerHTML = html.concat(memoryList.innerHTML);
-        //   } else {
-        //     console.log("There is a problem: ", data);
-        //   }
-        // });
         socket.on('newMemory', function (data) {
           if(data.text && (data.accountId == accountId.content)) {
             var html = '<li class="animated fadeInDown">';
@@ -61,6 +52,7 @@ block content
             } else {
               html += escapeHtml(data.text)+'<div class="memory-time"><small><a href="/memory/'+data._id+'">'+data.searchableTime+'</a></small></div></li>';
             }
+            if(noMemories){memoryList.innerHTML = '';noMemories = false;}
             memoryList.innerHTML = html.concat(memoryList.innerHTML);
             var cleanNewMemory = window.setTimeout(cleanMemory, 1000, memoryList.children[0]);
           } else {
@@ -185,7 +177,9 @@ block content
       };
       function clearSearchInner(element){element.innerHTML = null;};
       function awake(){
-        location.reload();
+        var resultsList = document.getElementById("results-list");
+        resultsList.innerHTML = '<div class="clear-search"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>';
+        resultsList.innerHTML += '<li class="animated fadeInLeft">To get the latest data, you should probably <a href="">refresh the page</a>.</li>';
       };
     include truncate
     include escape

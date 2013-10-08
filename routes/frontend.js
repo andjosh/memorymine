@@ -16,11 +16,11 @@ var passport = require('passport')
 module.exports = function (app, ensureAuthenticated) {
   app.get('/', function(req, res) {
     if(req.user){
-      Memory.find({ accountId: req.user._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
+      Memory.find({ accountId: req.user._id, modified: {$gte: moment().subtract('days', (req.query.days || 1)).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
         for(i=0;i<memories.length;i++){
           memories[i].modified = moment(memories[i].modified).fromNow();
         }
-        res.render('index', { title: 'Atomist - Search your thoughts', user: req.user, memories: memories, message: req.flash('message'), error: req.flash('error') });
+        res.render('index', { title: 'Atomist - Search your thoughts', user: req.user, memories: memories, dayCount: (parseFloat(req.query.days) + 1 || 1), message: req.flash('message'), error: req.flash('error') });
       });
     }else{
       res.render('index', { title: 'Atomist - Search your thoughts', user: req.user, memories: [], message: req.flash('message'), error: req.flash('error') });
