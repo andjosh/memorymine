@@ -247,6 +247,9 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 .text-center{
   text-align: center;
 }
+.text-right{
+  text-align: right;
+}
 .hiliter{
   color: rgb(194,89,117);
   font-style: italic;

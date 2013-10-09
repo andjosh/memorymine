@@ -28,7 +28,7 @@ module.exports = function (app, ensureAuthenticated) {
   });
   app.get('/atomistDemo', function(req, res) {
     Account.findOne({username: 'jsh+atomist'}).lean().exec(function(err,account){
-      Memory.find({ accountId: account._id, modified: {$gte: moment().subtract('days', 1).format()} }, null, {sort:{modified: -1}}).lean().exec(function(err, memories){
+      Memory.find({ accountId: account._id}, null, {sort:{modified: -1}, limit: 10}).lean().exec(function(err, memories){
         for(i=0;i<memories.length;i++){
           memories[i].modified = moment(memories[i].modified).fromNow();
         }
@@ -37,10 +37,10 @@ module.exports = function (app, ensureAuthenticated) {
     })
   });
   app.get('/contact', function(req, res) {
-    res.render('contact', { title: 'Contact', user: req.user, message: req.flash('message'), error: req.flash('error') });
+    res.render('contact', { title: 'Contact Atomist.co', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.post('/contact', function(req, res) {
-          mg.sendText(req.body.sender, ['jsh+atomist@bckmn.com'],
+          mg.sendText(req.body.sender, ['info@atomist.co'],
                                   'Contact from Atomist.co',
                                   req.body.words,
                                   'atomist.mailgun.org', {},
@@ -55,7 +55,7 @@ module.exports = function (app, ensureAuthenticated) {
     res.render('privacy', { title: 'Privacy Policy', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.get('/register', function(req, res) {
-    res.render('register', { title: 'Register', user: req.user, message: req.flash('message'), error: req.flash('error') });
+    res.render('register', { title: 'Register for Atomist.co', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.post('/register', function(req, res) {
     if (req.body.password != req.body.password_conf) {
@@ -75,7 +75,7 @@ module.exports = function (app, ensureAuthenticated) {
     });
   });
   app.get('/sign-in', function(req, res) {
-    res.render('signin', { title: 'Sign In', user: req.user, message: req.flash('message'), error: req.flash('error') });
+    res.render('signin', { title: 'Sign In to Atomist.co', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.post('/sign-in', passport.authenticate('local', { failureRedirect: '/', failureFlash: 'Invalid email or password.' }), function(req, res) {
     res.redirect('/');

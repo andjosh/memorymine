@@ -10,9 +10,10 @@ block content
       .pure-u-1-3.wide-half
         include searchform
         #results-list
-          if(memories.length == 0)
-            | <div class="clear-search delay4 animated fadeInDown"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>
-            li.animated.fadeInDown.delay4 You can search for thoughts past and present using this finder. Just type a keyword or multiple and submit.
+          if(true)
+            | <div class="clear-search delay animated fadeInDown"><a onclick="clearSearch(this.parentElement.parentElement);" title="Clear search results"><i class="icon-remove-sign"></i></a></div>
+            li.animated.fadeInDown You can search for thoughts past and present using this finder. Just type a keyword or multiple and submit.
+            li.animated.fadeInDown If, at any time, you need a helping hand, just type <code>help</code> into the big text box and submit.
       .pure-u-1-3.pull-center.wide-half
         #form-error
         include memoryForm
@@ -24,8 +25,9 @@ block content
           for memory in memories
             include memoryitem
           if(memories.length > 0)
-            li.text-center.muted
-              small(style="text-transform:uppercase;float:none;") 24 hours ago
+            li.text-center
+              small(style="text-transform:uppercase;float:none;")
+                a(href="?days="+dayCount) Go Back One day
       .pure-u-1-6.wide-only
 
     script
