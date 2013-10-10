@@ -93,14 +93,39 @@ code {background-color:#eee;padding:0.4em 0.6em;line-height: 2.5em;}
 #home-hero{
   margin: -4em 0 0 0;
   background-color: #5171ba;
+  color: white;
 }
 #home-hero p{
-  color: white;
   opacity: 0.9;
   margin-top: 4em;
 }
 #home-hero a{
   position:relative;z-index:100;font-size:4em;
+}
+#bottom-nav{
+  margin-top: -5em;
+  color: white;
+  position: relative;
+  z-index: 1000;
+  text-align: center;
+}
+#bottom-nav ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#bottom-nav ul li{
+  list-style: none;
+  display: inline;
+  margin: 0 1em;
+}
+#bottom-nav ul a{
+  color:white;
+  border-bottom: 1px solid white;
+}
+#bottom-nav ul a:hover{
+  color:white;
+  border-bottom: 3px solid white;
 }
 #explanation{
   margin: 40px auto 40px auto;

@@ -36,11 +36,14 @@ module.exports = function (app, ensureAuthenticated) {
       });
     })
   });
+  app.get('/features', function(req, res) {
+    res.render('features', { title: 'Atomist.co Features', user: req.user, message: req.flash('message'), error: req.flash('error') });
+  });
   app.get('/contact', function(req, res) {
     res.render('contact', { title: 'Contact Atomist.co', user: req.user, message: req.flash('message'), error: req.flash('error') });
   });
   app.post('/contact', function(req, res) {
-          mg.sendText(req.body.sender, ['info@atomist.co'],
+          mg.sendText(req.body.sender, ['jsh@bckmn.com'],
                                   'Contact from Atomist.co',
                                   req.body.words,
                                   'atomist.mailgun.org', {},
