@@ -141,14 +141,14 @@ module.exports = function(grunt) {
               plainBody += '- Atomist.co';
               htmlBody  += '</ul><p>- Your friends at <a href="http://atomist.co"><img src="http://atomist.co/images/favicon.png" width="20" height="20" alt="Atomist" style="vertical-align:middle;"/> Atomist.co</a></p>';
               mailcomposer.setMessageOption({
-                from: 'daily@atomist.co',
+                from: 'postmaster@atomist.mailgun.org',
                 to: accounts[i].email,
                 subject: 'Daily Atomist, '+moment().format("MMM Do 'YY"),
                 body: plainBody,
                 html: htmlBody
               }); 
               mailcomposer.buildMessage(function(err, messageSource){
-                mg.sendRaw('daily@atomist.co', 
+                mg.sendRaw('postmaster@atomist.mailgun.org', 
                   accounts[i].email,
                   messageSource,
                   'atomist.mailgun.org',

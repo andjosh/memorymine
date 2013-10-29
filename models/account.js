@@ -57,7 +57,7 @@ Account.methods.welcomeEmail = function(){
     html: htmlBody
   }); 
   mailcomposer.buildMessage(function(err, messageSource){
-    mg.sendRaw('welcome@atomist.co', 
+    mg.sendRaw('postmaster@atomist.mailgun.org', 
       [this.email,admin],
       messageSource,
       'atomist.mailgun.org',
