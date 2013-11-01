@@ -600,4 +600,7 @@ legend{
     width: auto;
   }
   .password-toggle{display: none;}
+  .hidden-mobile{
+    display: none;
+  }
 }

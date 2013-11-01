@@ -164,4 +164,21 @@ module.exports = function(grunt) {
       })();
     })
   });
+  grunt.registerTask('statusUpdate', 'email out a status update on accounts', function() {
+    // Invoke async mode
+    var done = this.async();
+    // Connect mongoose
+    mongoose.connect(mongoUri);
+    Account.count( function foundUsers(err, accounts) {
+      mg.sendText('postmaster@atomist.mailgun.org', ['jsh@bckmn.com'],
+        'Accounts Update',
+        'There are currently '+accounts.toString()+' active accounts, grunted Atomist.co',
+        'atomist.mailgun.org', {},
+        function(err) {
+          if (err) {console.log('Oh noes: ' + err); done();}
+          else     {console.log('Successful statusUpdate email'); done();}
+        }
+      );
+    });
+  });
 };
